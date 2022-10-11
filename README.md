@@ -1,4 +1,4 @@
-# stable-toolkit (1.0.2-miso)
+# stable-toolkit (1.0.3-miso)
 
 This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). It will most likely not work with other implementations as of now.
 
@@ -27,6 +27,7 @@ If anything doesn't make sense the "Usage" section below should explain it in de
  - Easily view and sort your images into different folders, or tags
  - Automatic tagging based on prompts (this is still not fully finished and can be turned off, see below)
  - Confirm version via the *Spring* CMD. It should match the version that's on top.
+ - You are able to reassign folder path if you *Add* a folder with the name of the one you want to overwrite
 
 ## Planned features
 
@@ -79,6 +80,14 @@ Several utilities are available to help with sorting/managing your generated ima
 These are the folders your images are in. You are able to add new folders and remove them. There are 2 types of folders: *Source* and *Index*. *Source* folders get read for new images and txt files for tags, this should ideally be coming from stable-diffusion-webui\outputs\[folder-name].  *Index* folders are folders that get indexed for images and tags. Tools are provided to move images easily between these folders.
 ### Tags & Automatic Tagging
 Tags are automatically picked up from the generated txt file from stable-diffusion-webui and populate the tags from your positive prompts. Currently you are able to add/remove tags, and associate them with your images. Selecting any number of tags to apply a filter to the images in the current folder. 
+
+**To use automatic tagging:**
+
+1. Add tags you want to pick from your prompts ie "cats" or "dogs"
+2. Prompts are divided by brackets and commas, so if you have "cat and, (dog running)", then "cat and" and "dog running" can be picked up
+3. Re-Index
+4. Everything automatically tagged based on your prompts
+
 *Note: If the automatic tagging is causing any issues you can manually edit \back\db\settings.json -> and set needsUpdating.automaticTagging -> false*
 ### Moving
 Select All selects all images, and selecting a folder from the dropdown moves any and all selected images to the folder picked.
