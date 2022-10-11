@@ -1,4 +1,4 @@
-# stable-toolkit (1.0.2-miso)
+# stable-toolkit (1.0.3-miso)
 
 This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). It will most likely not work with other implementations as of now.
 
@@ -27,6 +27,7 @@ If anything doesn't make sense the "Usage" section below should explain it in de
  - Easily view and sort your images into different folders, or tags
  - Automatic tagging based on prompts (this is still not fully finished and can be turned off, see below)
  - Confirm version via the *Spring* CMD. It should match the version that's on top.
+ - You are able to reassign folder path if you *Add* a folder with the name of the one you want to overwrite
 
 ## Planned features
 
