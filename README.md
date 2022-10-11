@@ -80,6 +80,14 @@ Several utilities are available to help with sorting/managing your generated ima
 These are the folders your images are in. You are able to add new folders and remove them. There are 2 types of folders: *Source* and *Index*. *Source* folders get read for new images and txt files for tags, this should ideally be coming from stable-diffusion-webui\outputs\[folder-name].  *Index* folders are folders that get indexed for images and tags. Tools are provided to move images easily between these folders.
 ### Tags & Automatic Tagging
 Tags are automatically picked up from the generated txt file from stable-diffusion-webui and populate the tags from your positive prompts. Currently you are able to add/remove tags, and associate them with your images. Selecting any number of tags to apply a filter to the images in the current folder. 
+
+**To use automatic tagging:**
+
+1. Add tags you want to pick from your prompts ie "cats" or "dogs"
+2. Prompts are divided by brackets and commas, so if you have "cat and, (dog running)", then "cat and" and "dog running" can be picked up
+3. Re-Index
+4. Everything automatically tagged based on your prompts
+
 *Note: If the automatic tagging is causing any issues you can manually edit \back\db\settings.json -> and set needsUpdating.automaticTagging -> false*
 ### Moving
 Select All selects all images, and selecting a folder from the dropdown moves any and all selected images to the folder picked.
