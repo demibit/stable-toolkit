@@ -1,4 +1,4 @@
-# stable-toolkit (1.0.3-miso)
+# stable-toolkit (1.0.4-miso)
 
 This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). It will most likely not work with other implementations as of now.
 
@@ -18,6 +18,7 @@ The below are needed to run the application. I think this includes everything, b
 ## Constraints
  - "Create a text file next to every image with generation parameters." **MUST** be turned on in Settings -> Saving images/grids. Whether you save hash information does not matter as that does not currently get processed.
  - Only .png and .txt files get processed at the moment
+ - When updating you might have to manually empty the images.json file then restart the back-end. I will figure out a way to remedy this in the future.
 
 # Features in current version
 If anything doesn't make sense the "Usage" section below should explain it in detail.
@@ -45,6 +46,13 @@ Generally speaking, doing Settings -> Re-Index can fix most problems that can oc
 
  - When deleting tags from an image while viewing it the tags don't refresh (works fine if not enlarged)
  - Sometimes when importing from *Source* folders, the image will be indexed twice
+
+## Releases
+
+ - 1.0.4: Much better image tagging, and displaying positive/negative prompts as well as generation info
+ - 1.0.3: Automatic image tagging and option to manually disable it
+ - 1.0.2: Minor bug fix
+ - 1.0.1: Initial release, image viewing, moving, and tagging
 
 # Usage
 If you follow the steps in this section you should be able to run the toolkit with ease
@@ -84,7 +92,7 @@ Tags are automatically picked up from the generated txt file from stable-diffusi
 **To use automatic tagging:**
 
 1. Add tags you want to pick from your prompts ie "cats" or "dogs"
-2. Prompts are divided by brackets and commas, so if you have "cat and, (dog running)", then "cat and" and "dog running" can be picked up
+2. Special characters from prompts like "( ) , : ." do not get picked up, so don't include them in your tags
 3. Re-Index
 4. Everything automatically tagged based on your prompts
 
