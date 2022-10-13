@@ -1,58 +1,77 @@
-# stable-toolkit (1.0.4-miso)
-
+# stable-toolkit (1.0.5-miso)
 This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). It will most likely not work with other implementations as of now.
 
-## Disclaimers
+***I am currently cleaning up the code, and once that is done I will make this open source.***
 
+## Disclaimers
  - ***The toolkit moves files.** I am **not** responsible for any data lass, back up your images before using the toolkit. It should not destroy anything, but setting it up wrong may cause unwanted consequences.*
  - *The toolkit is fully offline.*
  - *I do not, and will not support deletion operations. Create a "deleted" folder, move unwanted images there, and delete them manually. See this is a double confirmation for deletion.*
  - *If you do not follow the installation instructions precisely it is not likely you will succeed in doing it. I **highly** recommend following the instructions for **your** sake.*
+ - *If you do not have the latest version (see above), it is not guaranteed that the instructions below will work. Please always keep the toolkit updated.
 
 ## Requirements
 The below are needed to run the application. I think this includes everything, but open a ticket if you're struggling after getting them.
 
  - [NodeJS LTS](https://nodejs.org/en/)
- - [Java OpenJDK](https://jdk.java.net/java-se-ri/19) (the Windows 11 version works for Windows 10 as well)
+ - [Java OpenJDK ***19***](https://jdk.java.net/java-se-ri/19) (the Windows 11 version works for Windows 10 as well)
  - [AUTOMATIC1111's SD Implementation](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
+ 
 ## Constraints
- - "Create a text file next to every image with generation parameters." **MUST** be turned on in Settings -> Saving images/grids. Whether you save hash information does not matter as that does not currently get processed.
- - Only .png and .txt files get processed at the moment
- - When updating you might have to manually empty the images.json file then restart the back-end. I will figure out a way to remedy this in the future.
+ - Only .png and .txt files get processed at the moment (.txt file processing is optional)
+ 
+## Troubleshooting
+ - The general troubleshooting process should go as follows, and should fix most if not all problems encountered
+	- Check if updated to the latest version (verify version in Spring CMD)
+	- Re-Index images via UI (sometimes this takes a while, check the Spring CMD for info)
+	- Close CMD's and restart it
+		- You might need to re-index again
+	- Empty your images.json file in \stable-toolkit\back\db\ 
+		- Do ***not*** delete it, just empty it. Don't forget to save
+		- Restart and re-index
 
 # Features in current version
 If anything doesn't make sense the "Usage" section below should explain it in detail.
 
- - Moving images from SOURCE directories to INDEX directories with one click (see below for more info)
+ - Moving images from SOURCE directories to INDEX directories with one click 
+	- Works with any folder that has .png files in it
+	- If the folder also has .txt files it will try to pick up the generation information, as well as auto-tag the image
  - Automatically rename images to a random 16 digit string
  - Easily view and sort your images into different folders, or tags
- - Automatic tagging based on prompts (this is still not fully finished and can be turned off, see below)
+	- Create your tags ("cats" or "dogs")
+	- If your positive prompt has these words in it, your image will automatically be tagged with it
  - Confirm version via the *Spring* CMD. It should match the version that's on top.
- - You are able to reassign folder path if you *Add* a folder with the name of the one you want to overwrite
+ - You are able to reassign folder path if you *Add* a folder with the *exact* name of the one you want to overwrite
 
 ## Planned features
-
  - Expose setting editing for the web UI
 	 - Enable/disable automatic tag processing
 	 - Allow for different image renaming scheme (?)
 	 - Switching image loaders (?)
- - Let user define automatic tagging via whitelisting words
- - Have not tried working with grid or landscape images, might support those in the future.
  - Automatic aeshetic scoring/sorting (?)
  - Better support for different monitor sizes
+ - Allow for Live folder to be named anything
 
 ## Known Bugs
-Generally speaking, doing Settings -> Re-Index can fix most problems that can occur, however if one still persits, please open a ticket or let me know.
+Generally, if you follow the steps in *Troubleshooting*, it should fix most of your problems.
 
- - When deleting tags from an image while viewing it the tags don't refresh (works fine if not enlarged)
  - Sometimes when importing from *Source* folders, the image will be indexed twice
 
 ## Releases
-
- - 1.0.4: Much better image tagging, and displaying positive/negative prompts as well as generation info
- - 1.0.3: Automatic image tagging and option to manually disable it
- - 1.0.2: Minor bug fix
- - 1.0.1: Initial release, image viewing, moving, and tagging
+ - 1.0.5
+	- Minor bug fixes
+	- Able to accept images from folders without txt files, so in theory any kind of source folder that has .pngs
+	- Grids are able to be viewed and can be auto-tagged
+	- Image viewer now better on all screen sizes, image is fixed in the middle. Image is responsive, so the same zoom settings should work on both grids and singles
+	- Removed deleting tags from image viewing (can still do it from the drop-down), since the tags get re-added upon re-indexing. It would make more sense to remove the tag, rather than a tag from a single image.
+ - 1.0.4
+	- Much better image tagging, and displaying positive/negative prompts as well as generation info
+ - 1.0.3
+	- Automatic image tagging and option to manually disable it
+ - 1.0.2
+	- Minor bug fix
+ - 1.0.1
+	- Initial release, image viewing, moving, and tagging
 
 # Usage
 If you follow the steps in this section you should be able to run the toolkit with ease
