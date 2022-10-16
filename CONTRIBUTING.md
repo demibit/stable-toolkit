@@ -15,6 +15,6 @@ Some basic rules that I think should help keep the project tidy. These rules are
 - Any front-end related change will need images supplied for every state (eg. 1. button, and where it is, 2. what happens after button is clicked, 3. something else, etc...)
 
 ### Back-end rules
-- Do not submit anything back-end related that doesn't have 100% test coverage (will adjust this number if it seems fit)
+- Do not submit anything back-end related that decreses the test coverage at all
   - Objects or constants will not need to be tested and will be ignored, so there shouldn't be any excuses
-  - If you believe a folder needs ignored please discuss it with me first, either with a ticket, or in your pull request
+  - If you believe a package/class needs ignored please discuss it with me first, either with a ticket, or in your pull request
