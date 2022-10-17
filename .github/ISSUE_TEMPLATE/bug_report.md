@@ -2,7 +2,7 @@
 name: Bug report
 about: If you encounter any errors, and the troubleshooting section doesn't help
 title: "[BUG]: "
-labels: bug
+labels: bug, luna
 assignees: ''
 
 ---
