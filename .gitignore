@@ -1,0 +1,38 @@
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
+# Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# User-specific stuff
+.idea/
+
+# CMake
+cmake-build-*/
+
+# File-based project format
+*.iws
+
+# Notepad++
+*.bak
+
+# Logs
+*.log
+
+# Maven
+mvnw
+mvnw.cmd
+
+# .iml
+*.iml
+
+# HELP.md
+HELP.md
+
+# Back
+stable-toolkit-back/out/
+stable-toolkit-back/target/
+stable-toolkit-back/.mvn/
+
+# Front
+stable-toolkit-front/node_modules
+stable-toolkit-front/package-lock.json
+stable-toolkit-front/.next
+stable-toolkit-front/out
