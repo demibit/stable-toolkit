@@ -1,0 +1,39 @@
+{
+  "name": "site",
+  "version": "1.1.5",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next build && next export"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.10.3",
+    "@mui/material": "^5.8.3",
+    "@mui/styled-engine": "^5.8.0",
+    "@mui/x-date-pickers": "^5.0.4",
+    "@netlify/plugin-nextjs": "^4.8.0",
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^13.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "next": "12.1.6",
+    "prettier": "^2.6.2",
+    "react": "18.1.0",
+    "react-audio-player": "^0.17.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "18.1.0",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-loading": "^2.0.3",
+    "react-player": "^2.10.1",
+    "react-svg-pan-zoom": "^3.11.0",
+    "styled-components": "^5.3.5"
+  },
+  "devDependencies": {
+    "eslint": "8.17.0",
+    "eslint-config-next": "12.1.6"
+  }
+}
