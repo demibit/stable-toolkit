@@ -87,9 +87,9 @@ public class IndexerService {
 
               try {
                 File img = new File(path.toUri());
+                bimg = ImageIO.read(img);
                 textData = Arrays.asList(
                     pngTextExtractor.showText(new FileInputStream(img)));
-                bimg = ImageIO.read(img);
               } catch (Exception e) {
                 log.info("Unable to read image chunks at {}, proceeding with defaults",
                     folder.getName());
@@ -125,14 +125,14 @@ public class IndexerService {
                   .tags(tagsToAssign)
                   .positivePrompt(info.get("Positive prompt"))
                   .negativePrompt(info.get("Negative prompt"))
-                  .steps(Integer.valueOf(info.get("Steps")))
+                  .steps(Objects.nonNull(info.get("Steps")) ? Integer.valueOf(info.get("Steps")) : null)
                   .sampler(info.get("Sampler"))
-                  .denoise(Double.valueOf(info.get("Denoising strength")))
-                  .cfg(Double.valueOf(info.get("CFG scale")))
+                  .denoise(Objects.nonNull(info.get("Denoising strength")) ? Double.valueOf(info.get("Denoising strength")) : null)
+                  .cfg(Objects.nonNull(info.get("CFG scale")) ? Double.valueOf(info.get("CFG scale")) : null)
                   .modelHash(info.get("Model hash"))
                   .faceRestoration(info.get("Face restoration"))
                   .hypernet(info.get("Hypernet"))
-                  .clipSkip(Integer.valueOf(info.get("Clip skip")))
+                  .clipSkip(Objects.nonNull(info.get("Clip skip")) ? Integer.valueOf(info.get("Clip skip")) : null)
                   .width(width)
                   .height(height)
                   .build());

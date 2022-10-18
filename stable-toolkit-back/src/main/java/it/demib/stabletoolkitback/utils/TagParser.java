@@ -1,6 +1,7 @@
 package it.demib.stabletoolkitback.utils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import org.springframework.data.util.Pair;
@@ -19,6 +20,7 @@ public class TagParser implements TextParser<List<String>, Pair<List<String>, St
   }
 
   public static boolean isContain(String source, String subItem){
-    return Pattern.compile("\\b"+subItem+"\\b").matcher(source).find();
+    return Objects.nonNull(source) && Objects.nonNull(subItem) && Pattern.compile(
+        "\\b" + subItem + "\\b").matcher(source).find();
   }
 }
