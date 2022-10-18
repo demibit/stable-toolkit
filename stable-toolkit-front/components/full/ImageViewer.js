@@ -287,6 +287,17 @@ const ImageViewer = ({setCurrentPage}) => {
     getImageFilters();
     getFolders();
     getImages();
+
+    const interval = setInterval(() => {
+      getImageFilters();
+      getFolders();
+      getImages();
+    }, 10000);
+
+
+    return () => {
+      clearInterval(interval);
+    };
   }, [numberOfImagesToShow]);
 
   return (
