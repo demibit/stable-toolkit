@@ -294,7 +294,9 @@ const ImageViewer = ({setCurrentPage}) => {
   }
 
   useEffect(() => {
-    runGets()
+    if (selectedImages.length === 0) {
+      runGets()
+    }
   }, [numberOfImagesToShow]);
 
   return (
@@ -302,7 +304,6 @@ const ImageViewer = ({setCurrentPage}) => {
         <InfiniteScroll next={() => {
           setNumberOfImagesToShow(
               numberOfImagesToShow + defaultNumberOfImagesToShow)
-          getImages();
         }} hasMore={numberOfImagesToShow <= images.length}
                         loader={<TypographyCenter>Loading...</TypographyCenter>}
                         dataLength={images.length}>
