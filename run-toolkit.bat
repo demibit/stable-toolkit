@@ -1,8 +1,9 @@
 @echo off
-cd "C:\stable-toolkit\back"
+cd stable-toolkit-back
 start run-back.bat
 
-cd "C:\stable-toolkit\front"
+cd ..
+cd stable-toolkit-front
 start run-front.bat
 
 exit

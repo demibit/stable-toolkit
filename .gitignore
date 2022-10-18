@@ -30,6 +30,7 @@ HELP.md
 stable-toolkit-back/out/
 stable-toolkit-back/target/
 stable-toolkit-back/.mvn/
+*.gz
 
 # Front
 stable-toolkit-front/node_modules
