@@ -223,7 +223,10 @@ const ImageViewer = ({setCurrentPage}) => {
       }
     })
 
-    api.putImage(imagesToMove).then(value => getImages())
+    api.putImage(imagesToMove).then(value => {
+      getImages()
+      setSelectedImages([])
+    })
   }
 
   const getTags = () => {

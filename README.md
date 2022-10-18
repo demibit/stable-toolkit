@@ -1,4 +1,4 @@
-# stable-toolkit (2.1.0-luna)
+# stable-toolkit (2.0.2-luna)
 
 ![](miso.png) ![](luna.png)
 
@@ -109,6 +109,101 @@ Using the checkbox selects all images, and selecting a folder from the dropdown 
 ### Settings
 
 This is where you can see how many images are currently displayed, add/delete locations, and add/delete tags. Re-Index is quite useful when something goes wrong, or the image db needs to be remade. Try this first when something doesn't display or goes wrong.
+
+# Releases
+
+The latest releases can be found here. The format of releases in the case of `x.y.z` are:
+
+- `x`: Major releases that can include redesigns/significat features/changes that might not be compatible with previous versions
+- `x`: Minor releases that include new/changed/removed features, and various bug fixes
+- `x`: Patch releases inbetween feature rollouts typically for important bug fixes
+
+## Luna 2.x.x
+
+- 2.x.x
+  - Automatic aeshetic scoring/sorting (?)
+  - Prompt generator (output can be read via using the web-ui script, see the files above, place it in the _\web-ui\scripts_ folder)
+    - You can name/save/export/import your and others' prompt generation settings
+    - Prompt boxes and sliders for generating a text file with random values.
+    - Place **_.txt_** files into _\stable-toolkit\back\db\wildcards_ with the file name of the wildcard you want to use. (eg. "numbers.txt")
+    - The possible prompts should be separated by line. If you are still unsure how it should look, check the example file at _\stable-toolkit\back\db\wildcards\numbers.txt_
+    - When creating your prompts you can use the format \_\_numbers\_\_ to represent prompts you want to randomize.
+      - You can still use the same nomenclature you use in the web-ui (eg. _(\_\_dogTypes\_\_\:1.15)_ will mean that _dogTypes_ will be replaced with prompts from your _dogTypes.txt_ file)
+      - You can do _(persian cat:0.9|1.2)_ to indicate that this should be replaced with a random number between _0.9_ and _1.2_
+    - Compile existing prompts in a folder to a text file
+    - You are able to generate the same exact prompt x number of times, up to the whole prompts/settings being random
+  - Expose settings:
+    - Maximum and minimum limits for each of the prompt generator settings
+    - Empty logging file (along with it's current size)
+    - Empty logs on Re-Index (off by default, not recommended as logs are very useful in finding bugs, but it's an option for those who are confident)
+    - Reset settings button
+    - Switching image loaders (?) (can be done manually by editing \*\front-code\next.config.js)
+    - Add option for opting in/out of name randomization on move, eliminating the need for folder types
+  - Automatic aeshetic scoring/sorting (?)
+  - Better support for different monitor sizes
+  - Mass tagging
+  - Better statistics
+- 2.1.0
+  - Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster.
+  - Switch between images using arrows (and arrow keys)
+  - Dropdowns for drawer sections
+- 2.0.2
+  - Updated bat files, everything should work properly now
+  - Added refresh button, click to update the UI
+- 2.0.1
+  - You can download as little as the _download-toolkit.bat_ file from above
+    - Run it and if you have all the requirements it will download the source code
+    - It will then compile the source code
+    - You can run _update-toolkit.bat_ to update and recompile the toolkit
+    - In consecutive run, you should use _run-toolkit.bat_.
+- 2.0.0
+  - Now open source!
+  - Redesigned UI with a full-screen view in mind. Should be more intuitive to navigate
+  - Filter by generation parameters. Currently supporting:
+    - Sample steps
+    - Sampler
+    - Denoise
+    - CFG
+    - Model hash
+    - Face restoration
+    - Hypernet
+    - Clip skip
+    - Width
+    - Height
+    - Image creation date
+  - Folder names now the actual name of the folder, so there's no need to input them manually
+    - If this turns out to be a better way to do it than manual naming I will reduce this operation from the front- to the backend
+    - Otherwise maybe give the option (?)
+  - You can now view both _Source_ and _Index_ folders, and moving from a _Source_ folder to an _Index_ one renames the file to a random 16 digit number
+  - Now using _MongoDB_ instead of a json file, should make things faster, and more reliable. Initial tests were run on a folder (each 3 times) of _3743_ images, and found (this probably varies from system to system, however, still promising):
+    - A _79.5%_ reduction in image processing time (average of 33.28ms/img down to an average of 6.8ms/img)
+    - A _97%_ reduction in storage size (average of 3782kb down to an average of 113kb). (However, please note the installation size of MongoDB)
+  - Test coverage
+    - Will try to improve it each release, I have manually tested as much of the functionality as I could and everything seems fine on my end, but we'll obviously see how it is with others
+    - Backend (via JaCoCo) at: 40%
+    - Frontend at: 0%
+  - .png chunk information retreival is now available (and the only option)
+    - .png chunks supported (from web-ui only): tEXt, iTXt
+  - Better image tagging, you can now use whatever words you want as your tags and the exact word will get picked up. (eg. say your prompt is _(cats:1.1)_, your tag can be anything such as _(cats:1.1)_, _cats_, _cats:_, _cats:1._ etc.. and it will get picked up) (from issue #7)
+  - Usable backend only, if anyone wants to create a better/different frontend, it should be fairly straight forward API docs below
+    - This also means the frontend will have a lesser load to deal with, which should help it run faster
+
+## Miso 1.x.x
+
+- 1.0.5
+  - Minor bug fixes
+  - Able to accept images from folders without txt files, so in theory any kind of source folder that has .pngs
+  - Grids are able to be viewed and can be auto-tagged
+  - Image viewer now better on all screen sizes, image is fixed in the middle. Image is responsive, so the same zoom settings should work on both grids and singles
+  - Removed deleting tags from image viewing (can still do it from the drop-down), since the tags get re-added upon re-indexing. It would make more sense to remove the tag, rather than a tag from a single image.
+- 1.0.4
+  - Much better image tagging, and displaying positive/negative prompts as well as generation info
+- 1.0.3
+  - Automatic image tagging and option to manually disable it
+- 1.0.2
+  - Minor bug fix
+- 1.0.1
+  - Initial release, image viewing, moving, and tagging
 
 ## API
 
@@ -610,95 +705,3 @@ DELETE /setting/
 ```
 true
 ```
-
-# Releases
-
-The latest releases can be found here. The format of releases in the case of `x.y.z` are:
-
-- `x`: Major releases that can include redesigns/significat features/changes that might not be compatible with previous versions
-- `x`: Minor releases that include new/changed/removed features, and various bug fixes
-- `x`: Patch releases inbetween feature rollouts typically for important bug fixes
-
-## Luna 2.x.x
-
-- 2.x.x
-  - Automatic aeshetic scoring/sorting (?)
-  - Prompt generator (output can be read via using the web-ui script, see the files above, place it in the _\web-ui\scripts_ folder)
-    - You can name/save/export/import your and others' prompt generation settings
-    - Prompt boxes and sliders for generating a text file with random values.
-    - Place **_.txt_** files into _\stable-toolkit\back\db\wildcards_ with the file name of the wildcard you want to use. (eg. "numbers.txt")
-    - The possible prompts should be separated by line. If you are still unsure how it should look, check the example file at _\stable-toolkit\back\db\wildcards\numbers.txt_
-    - When creating your prompts you can use the format \_\_numbers\_\_ to represent prompts you want to randomize.
-      - You can still use the same nomenclature you use in the web-ui (eg. _(\_\_dogTypes\_\_\:1.15)_ will mean that _dogTypes_ will be replaced with prompts from your _dogTypes.txt_ file)
-      - You can do _(persian cat:0.9|1.2)_ to indicate that this should be replaced with a random number between _0.9_ and _1.2_
-    - Compile existing prompts in a folder to a text file
-    - You are able to generate the same exact prompt x number of times, up to the whole prompts/settings being random
-  - Expose settings:
-    - Maximum and minimum limits for each of the prompt generator settings
-    - Empty logging file (along with it's current size)
-    - Empty logs on Re-Index (off by default, not recommended as logs are very useful in finding bugs, but it's an option for those who are confident)
-    - Reset settings button
-    - Switching image loaders (?) (can be done manually by editing \*\front-code\next.config.js)
-    - Add option for opting in/out of name randomization on move, eliminating the need for folder types
-  - Automatic aeshetic scoring/sorting (?)
-  - Better support for different monitor sizes
-  - Mass tagging
-  - Better statistics
-- 2.1.0
-  - Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster.
-  - Switch between images using arrows (and arrow keys)
-  - Dropdowns for drawer sections
-- 2.0.1
-  - You can download as little as the _download-toolkit.bat_ file from above
-    - Run it and if you have all the requirements it will download the source code
-    - It will then compile the source code
-    - You can run _update-toolkit.bat_ to update and recompile the toolkit
-    - In consecutive run, you should use _run-toolkit.bat_.
-- 2.0.0
-  - Now open source!
-  - Redesigned UI with a full-screen view in mind. Should be more intuitive to navigate
-  - Filter by generation parameters. Currently supporting:
-    - Sample steps
-    - Sampler
-    - Denoise
-    - CFG
-    - Model hash
-    - Face restoration
-    - Hypernet
-    - Clip skip
-    - Width
-    - Height
-    - Image creation date
-  - Folder names now the actual name of the folder, so there's no need to input them manually
-    - If this turns out to be a better way to do it than manual naming I will reduce this operation from the front- to the backend
-    - Otherwise maybe give the option (?)
-  - You can now view both _Source_ and _Index_ folders, and moving from a _Source_ folder to an _Index_ one renames the file to a random 16 digit number
-  - Now using _MongoDB_ instead of a json file, should make things faster, and more reliable. Initial tests were run on a folder (each 3 times) of _3743_ images, and found (this probably varies from system to system, however, still promising):
-    - A _79.5%_ reduction in image processing time (average of 33.28ms/img down to an average of 6.8ms/img)
-    - A _97%_ reduction in storage size (average of 3782kb down to an average of 113kb). (However, please note the installation size of MongoDB)
-  - Test coverage
-    - Will try to improve it each release, I have manually tested as much of the functionality as I could and everything seems fine on my end, but we'll obviously see how it is with others
-    - Backend (via JaCoCo) at: 40%
-    - Frontend at: 0%
-  - .png chunk information retreival is now available (and the only option)
-    - .png chunks supported (from web-ui only): tEXt, iTXt
-  - Better image tagging, you can now use whatever words you want as your tags and the exact word will get picked up. (eg. say your prompt is _(cats:1.1)_, your tag can be anything such as _(cats:1.1)_, _cats_, _cats:_, _cats:1._ etc.. and it will get picked up) (from issue #7)
-  - Usable backend only, if anyone wants to create a better/different frontend, it should be fairly straight forward API docs below
-    - This also means the frontend will have a lesser load to deal with, which should help it run faster
-
-## Miso 1.x.x
-
-- 1.0.5
-  - Minor bug fixes
-  - Able to accept images from folders without txt files, so in theory any kind of source folder that has .pngs
-  - Grids are able to be viewed and can be auto-tagged
-  - Image viewer now better on all screen sizes, image is fixed in the middle. Image is responsive, so the same zoom settings should work on both grids and singles
-  - Removed deleting tags from image viewing (can still do it from the drop-down), since the tags get re-added upon re-indexing. It would make more sense to remove the tag, rather than a tag from a single image.
-- 1.0.4
-  - Much better image tagging, and displaying positive/negative prompts as well as generation info
-- 1.0.3
-  - Automatic image tagging and option to manually disable it
-- 1.0.2
-  - Minor bug fix
-- 1.0.1
-  - Initial release, image viewing, moving, and tagging
