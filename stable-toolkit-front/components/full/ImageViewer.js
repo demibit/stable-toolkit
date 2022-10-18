@@ -44,6 +44,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import FolderIcon from '@mui/icons-material/Folder';
 import InfiniteScroll from "react-infinite-scroll-component";
 import DeleteIcon from '@mui/icons-material/Delete';
+import SyncIcon from '@mui/icons-material/Sync';
 
 const folderTypes = [
   {
@@ -222,7 +223,10 @@ const ImageViewer = ({setCurrentPage}) => {
       }
     })
 
-    api.putImage(imagesToMove).then(value => getImages())
+    api.putImage(imagesToMove).then(value => {
+      getImages()
+      setSelectedImages([])
+    })
   }
 
   const getTags = () => {
@@ -283,10 +287,14 @@ const ImageViewer = ({setCurrentPage}) => {
     api.triggerReIndex().then(value => getImages())
   }
 
-  useEffect(() => {
+  const runGets = () => {
     getImageFilters();
     getFolders();
     getImages();
+  }
+
+  useEffect(() => {
+    runGets()
   }, [numberOfImagesToShow]);
 
   return (
@@ -922,8 +930,16 @@ const ImageViewer = ({setCurrentPage}) => {
           <FilterListIcon/>
         </FilterFab>
 
+        <FilterFab fromBot={0}
+                   fromLeft={1}
+                   onClick={(e) => runGets()}
+                   size={"medium"}>
+          <SyncIcon/>
+        </FilterFab>
+
+
         {images.length > 0 && <FilterFab fromBot={0}
-                                         fromLeft={1}
+                                         fromLeft={2}
                                          onClick={(e) => selectedImages.length
                                          === images.length
                                              ? setSelectedImages([])
@@ -934,7 +950,7 @@ const ImageViewer = ({setCurrentPage}) => {
 
 
         {selectedImages.length > 0 && <FilterFab fromBot={0}
-                                                 fromLeft={2}
+                                                 fromLeft={3}
                                                  variant={"extended"}>
           <TextField
               select

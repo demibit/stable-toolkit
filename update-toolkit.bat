@@ -1,11 +1,11 @@
 @ECHO OFF
 git pull
+
 cd stable-toolkit-back
-mvn clean install
-mvn clean package
+start compile.bat
+
 cd ..
 cd stable-toolkit-front
-npm i
-npm export
+start compile.bat
 
 exit
