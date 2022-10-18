@@ -1,4 +1,4 @@
-# stable-toolkit (2.0.2-luna)
+# stable-toolkit (2.0.3-luna)
 
 ![](miso.png) ![](luna.png)
 
@@ -147,6 +147,8 @@ The latest releases can be found here. The format of releases in the case of `x.
   - Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster.
   - Switch between images using arrows (and arrow keys)
   - Dropdowns for drawer sections
+- 2.0.3
+  - Better png image chunk parsing (previously failed at some null values)
 - 2.0.2
   - Updated bat files, everything should work properly now
   - Added refresh button, click to update the UI
