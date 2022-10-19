@@ -297,7 +297,7 @@ const ImageViewer = ({setCurrentPage}) => {
     if (selectedImages.length === 0) {
       runGets()
     }
-  }, [numberOfImagesToShow]);
+  }, [numberOfImagesToShow, selectedImages.length]);
 
   return (
       <StyledBox>
