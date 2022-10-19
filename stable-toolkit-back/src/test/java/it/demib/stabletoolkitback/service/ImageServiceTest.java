@@ -219,7 +219,7 @@ public class ImageServiceTest {
     }
 
     @Test
-    @DisplayName("Given image have tag dog, but it's not in db, return the image without tags")
+    @DisplayName("Given image have tag dog, but it's not in db, do nothing")
     public void test1() {
       // Given image have tag dog, but it's not in db
       List<Image> mockImages = new ArrayList<>(List.of(Image.builder()
@@ -229,12 +229,11 @@ public class ImageServiceTest {
           .build()));
       when(tagService.findAll()).thenReturn(new ArrayList<>());
       when(imageService.findAll()).thenReturn(mockImages);
-      when(imageService.saveAll(anyList())).thenReturn(mockImages);
-      when(imageRepository.saveAll(anyList())).thenReturn(mockImages);
-      when(imageRepository.findById(any())).thenReturn(Optional.ofNullable(mockImages.get(0)));
 
       imageService.updateTags();
-      // Then return the image without tags
+      // Then do nothing
+      verify(imageRepository, times(0)).saveAll(anyList());
+      verify(imageRepository, times(0)).save(any());
     }
   }
 }
