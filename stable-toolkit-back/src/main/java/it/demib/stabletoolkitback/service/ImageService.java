@@ -316,13 +316,14 @@ public class ImageService {
     List<Image> currentImages = findAll();
     List<String> currentUserTags = tagService.findAll();
 
-    for (Image image : currentImages) {
-      image.setTags(
-          currentUserTags.stream().filter(s -> TagParser.isContain(image.getPositivePrompt(), s))
-              .collect(Collectors.toList()));
+    if (currentUserTags.size() > 0) {
+      for (Image image : currentImages) {
+        image.setTags(
+            currentUserTags.stream().filter(s -> TagParser.isContain(image.getPositivePrompt(), s))
+                .collect(Collectors.toList()));
+      }
+      saveAll(currentImages);
     }
-
-    saveAll(currentImages);
   }
 
 
