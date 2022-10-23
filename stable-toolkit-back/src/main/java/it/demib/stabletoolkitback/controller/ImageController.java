@@ -9,7 +9,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -53,6 +52,7 @@ public class ImageController {
 
     return true;
   }
+
   @PutMapping
   public List<Image> updateImages(@RequestBody List<Image> images) {
     return imageService.saveAll(images);

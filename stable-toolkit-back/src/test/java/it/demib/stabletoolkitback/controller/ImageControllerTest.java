@@ -13,7 +13,6 @@ import it.demib.stabletoolkitback.model.dto.ImageQueryParameters;
 import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.service.ImageService;
 import java.util.List;
-import org.bson.Document;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

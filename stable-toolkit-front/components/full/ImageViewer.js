@@ -46,17 +46,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SyncIcon from '@mui/icons-material/Sync';
 
-const folderTypes = [
-  {
-    value: 'SOURCE',
-    label: 'Source',
-  },
-  {
-    value: 'INDEX',
-    label: 'Index',
-  }
-];
-
 const defaultNumberOfImagesToShow = 50;
 const defaultScale = 6;
 
@@ -117,7 +106,6 @@ const ImageViewer = ({setCurrentPage}) => {
   const [selectedTagGroup, setSelectedTagGroup] = useState('add');
   const [selectedLocationGroup, setSelectedLocationGroup] = useState('add');
 
-  const [folderType, setFolderType] = useState("");
   const [folderPath, setFolderPath] = useState("");
 
   const getImageFilters = () => {
@@ -251,12 +239,10 @@ const ImageViewer = ({setCurrentPage}) => {
     const foldersToPut = [{
       name: splitPath[splitPath.length - 1],
       path: folderPath,
-      folderType: folderType
     }]
 
     api.putFolder(foldersToPut).then(value => {
       setFolderPath("")
-      setFolderType("")
       getFolders()
     });
   }
@@ -393,23 +379,6 @@ const ImageViewer = ({setCurrentPage}) => {
 
           {selectedLocationGroup === 'add' &&
               <Fragment>
-                <ListItem>
-                  <TextField
-                      select
-                      label="Type"
-                      value={folderType}
-                      onChange={(e) => {
-                        setFolderType(e.target.value)
-                      }}
-                      fullWidth
-                  >
-                    {folderTypes.map((option, index) => (
-                        <MenuItem key={index} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                    ))}
-                  </TextField>
-                </ListItem>
                 <ListItem>
                   <TextField
                       label="Path"

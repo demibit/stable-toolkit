@@ -6,7 +6,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.model.entity.TagHolder;
 import it.demib.stabletoolkitback.repository.TagRepository;
 import java.util.ArrayList;

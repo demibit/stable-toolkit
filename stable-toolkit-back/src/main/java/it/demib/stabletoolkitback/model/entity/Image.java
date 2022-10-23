@@ -2,7 +2,6 @@ package it.demib.stabletoolkitback.model.entity;
 
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

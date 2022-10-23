@@ -16,11 +16,11 @@ public class MongoDbConfiguration {
 
   @Bean("IMAGE")
   public MongoCollection<Document> getImageCollection() {
-    return mongoClient.getDatabase("test").getCollection("image");
+    return mongoClient.getDatabase("stable-toolkit").getCollection("image");
   }
 
   @Bean("TAG")
   public MongoCollection<Document> getTagCollection() {
-    return mongoClient.getDatabase("test").getCollection("tag");
+    return mongoClient.getDatabase("stable-toolkit").getCollection("tag");
   }
 }

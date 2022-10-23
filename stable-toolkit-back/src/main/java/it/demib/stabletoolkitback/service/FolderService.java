@@ -26,7 +26,8 @@ public class FolderService {
 
   protected void deleteFolders(List<Folder> folders) {
     if (folders.size() > 0) {
-      folderRepository.deleteAllById(folders.stream().map(Folder::get_id).collect(Collectors.toList()));
+      folderRepository.deleteAllById(
+          folders.stream().map(Folder::get_id).collect(Collectors.toList()));
     } else {
       folderRepository.deleteAll();
     }

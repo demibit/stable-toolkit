@@ -106,8 +106,7 @@ public class PNGTextExtractor {
 
           String[] lines = null;
 
-          if (compr)
-          {
+          if (compr) {
             InflaterInputStream ii = new InflaterInputStream(
                 new ByteArrayInputStream(buf, keyword_len + 1, data_len - keyword_len - 1));
             InputStreamReader ir = new InputStreamReader(ii, "UTF-8");
@@ -116,8 +115,7 @@ public class PNGTextExtractor {
             while ((read = br.readLine()) != null) {
               log.info(read);
             }
-          } else
-          {
+          } else {
             lines = new String(buf, keyword_len + 1, data_len - keyword_len - 1, "UTF-8").split(
                 "\n");
           }

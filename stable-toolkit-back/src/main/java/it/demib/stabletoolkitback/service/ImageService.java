@@ -4,7 +4,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
-import it.demib.stabletoolkitback.constant.FolderType;
 import it.demib.stabletoolkitback.model.dto.ImageDTO;
 import it.demib.stabletoolkitback.model.dto.ImageQueryParameters;
 import it.demib.stabletoolkitback.model.dto.MoveDTO;
@@ -27,7 +26,6 @@ import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -334,27 +332,15 @@ public class ImageService {
                 .orElseThrow()
                 .getLocation()
                 .equals(image.getLocation()))
-        .map(image -> {
-
-          String newFileName = RandomStringUtils.randomNumeric(16) + ".png";
-
-          boolean movingFromSourceFolder = folderService.getFolders()
-              .stream()
-              .filter(folder ->
-                  folder.getFolderType().equals(FolderType.SOURCE))
-              .anyMatch(folder -> folder.getPath()
-                  .equals(imageRepository.findById(image.get_id()).orElseThrow().getLocation()));
-
-          return Pair.of(image.toBuilder()
-                  .fileName(movingFromSourceFolder ? newFileName : image.getFileName())
-                  .build(),
-              MoveDTO.builder()
-                  .from(imageRepository.findById(image.get_id()).orElseThrow().getLocation())
-                  .to(image.getLocation())
-                  .fileName(image.getFileName())
-                  .newFileName(movingFromSourceFolder ? newFileName : image.getFileName())
-                  .build());
-        }).toList();
+        .map(image -> Pair.of(image.toBuilder()
+                .fileName(image.getFileName())
+                .build(),
+            MoveDTO.builder()
+                .from(imageRepository.findById(image.get_id()).orElseThrow().getLocation())
+                .to(image.getLocation())
+                .fileName(image.getFileName())
+                .newFileName(image.getFileName())
+                .build())).toList();
 
     newListOfImages.stream()
         .parallel()

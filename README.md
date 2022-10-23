@@ -47,11 +47,7 @@ If anything doesn't make sense the "Usage" section below should explain it in de
 
 - Move images from directory to directory with a few clicks
 - Add folders and move images between them
-  - _Source_ type folders are typically the output folders of the web-ui. (eg. _\web-ui\outputs\img2img-images_)
-  - _Index_ type folders are typically your own defined folders.
-  - Moving from a _Source_ type folder to an _Index_ type folder will randomize the image's name
-  - Works with any folder that has .png files in it
-  - If the image has chunks in the format of the web-ui's, your images can get automatically tagged
+  - If the image has chunks in the format of the web-ui's, it will be automatically tagged
 - Easily view and sort your images into different folders, or tags
   - Create your tags ("cats" or "dogs")
   - If your positive prompt has these words in it, your image will automatically be tagged with it
@@ -63,7 +59,7 @@ If anything doesn't make sense the "Usage" section below should explain it in de
 
 Generally, if you follow the steps in _Troubleshooting_, it should fix most of your problems.
 
-- None known as of 2.0.0-luna release
+- None confirmed as of 2.0.3-luna release
 
 # Usage
 
@@ -90,7 +86,7 @@ Several utilities are available to help with sorting/managing your generated ima
 
 ### Location
 
-These are the folders your images are in. You are able to add new folders and remove them. There are 2 types of folders: _Source_ and _Index_. _Source_ folders are where your generated images get output to, this should ideally be coming from stable-diffusion-webui\outputs\[folder-name]. _Index_ folders are user defined folders, and moving an image from a _Source_ folder to an _Index_ folder will randomize the image's name. Select individual images, or all images currently in view via the checkbox, and move them via the folder icon.
+These are the folders your images are in. The folder must already exist before adding it to the toolkit, as the service will not create it for you. Select individual images, or all images currently in view via the checkbox, and move them via the folder icon.
 
 ### Tags & Automatic Tagging
 
@@ -121,8 +117,8 @@ The latest releases can be found here. The format of releases in the case of `x.
 ## Luna 2.x.x
 
 - 2.x.x
-  - Automatic aeshetic scoring/sorting (?)
-  - Prompt generator (output can be read via using the web-ui script, see the files above, place it in the _\web-ui\scripts_ folder)
+  - [ ] Automatic aeshetic scoring/sorting (?)
+  - [ ] Prompt generator (output can be read via using the web-ui script, see the files above, place it in the _\web-ui\scripts_ folder)
     - You can name/save/export/import your and others' prompt generation settings
     - Prompt boxes and sliders for generating a text file with random values.
     - Place **_.txt_** files into _\stable-toolkit\back\db\wildcards_ with the file name of the wildcard you want to use. (eg. "numbers.txt")
@@ -130,23 +126,25 @@ The latest releases can be found here. The format of releases in the case of `x.
     - When creating your prompts you can use the format \_\_numbers\_\_ to represent prompts you want to randomize.
       - You can still use the same nomenclature you use in the web-ui (eg. _(\_\_dogTypes\_\_\:1.15)_ will mean that _dogTypes_ will be replaced with prompts from your _dogTypes.txt_ file)
       - You can do _(persian cat:0.9|1.2)_ to indicate that this should be replaced with a random number between _0.9_ and _1.2_
-    - Compile existing prompts in a folder to a text file
     - You are able to generate the same exact prompt x number of times, up to the whole prompts/settings being random
-  - Expose settings:
+  - [ ] Expose settings:
     - Maximum and minimum limits for each of the prompt generator settings
     - Empty logging file (along with it's current size)
     - Empty logs on Re-Index (off by default, not recommended as logs are very useful in finding bugs, but it's an option for those who are confident)
     - Reset settings button
     - Switching image loaders (?) (can be done manually by editing \*\front-code\next.config.js)
     - Add option for opting in/out of name randomization on move, eliminating the need for folder types
-  - Automatic aeshetic scoring/sorting (?)
-  - Better support for different monitor sizes
-  - Mass tagging
-  - Better statistics
+  - [ ] Better support for different monitor sizes
+  - [ ] Mass tagging (for tags not present in the prompt)
+  - [ ] Better statistics
 - 2.1.0
-  - Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster.
-  - Switch between images using arrows (and arrow keys)
-  - Dropdowns for drawer sections
+  - [x] Updated db name (this means folders/tags might need to be readded when updating)
+  - [x] Removed the need for Source/Index folders
+  - [ ] Allow users to find the location of any image easily
+  - [ ] Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster
+  - [ ] Switch between images using arrows (and arrow keys)
+  - [ ] Dropdowns for drawer sections (easier navigation of filters)
+  - [ ] Mass moving (currently, only in-view images get moved when selecting all and moving)
 - 2.0.3
   - Better png image chunk parsing (previously failed at some null values)
 - 2.0.2
@@ -491,12 +489,10 @@ GET /folder/
 	{
 		"name": "folderName1",
 		"path": "folderPath1",
-		"type": "SOURCE"
 	},
 	{
 		"name": "folderName2",
 		"path": "folderPath2",
-		"type": "INDEX"
 	},
 	...
 ]
@@ -519,12 +515,10 @@ PUT /folder/
 	{
 		"name": "folderName1",
 		"path": "folderPath1",
-		"type": "SOURCE"
 	},
 	{
 		"name": "folderName2",
 		"path": "folderPath2",
-		"type": "INDEX"
 	},
 	...
 ]
@@ -537,12 +531,10 @@ PUT /folder/
 	{
 		"name": "folderName1",
 		"path": "folderPath1",
-		"type": "SOURCE"
 	},
 	{
 		"name": "folderName2",
 		"path": "folderPath2",
-		"type": "INDEX"
 	},
 	...
 ]
@@ -565,12 +557,10 @@ DELETE /folder/
 	{
 		"name": "folderName1",
 		"path": "folderPath1",
-		"type": "SOURCE"
 	},
 	{
 		"name": "folderName2",
 		"path": "folderPath2",
-		"type": "INDEX"
 	},
 	...
 ]
@@ -583,12 +573,10 @@ DELETE /folder/
 	{
 		"name": "folderName3",
 		"path": "folderPath3",
-		"type": "INDEX"
 	},
 	{
 		"name": "folderName4",
 		"path": "folderPath4",
-		"type": "INDEX"
 	},
 	...
 ]
