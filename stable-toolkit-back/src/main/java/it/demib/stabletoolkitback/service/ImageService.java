@@ -110,7 +110,7 @@ public class ImageService {
         modelHash.add(img.getModelHash());
       }
       if (Objects.nonNull(img.getModelName()) && !modelHash.contains(img.getModelName())) {
-        modelHash.add(img.getModelName());
+        modelName.add(img.getModelName());
       }
       if (Objects.nonNull(img.getFaceRestoration()) && !faceRestoration.contains(
           img.getFaceRestoration())) {

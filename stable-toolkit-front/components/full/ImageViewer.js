@@ -119,17 +119,17 @@ const ImageViewer = ({setCurrentPage}) => {
           setSelectedFilters({
             location: [],
             tags: [],
-            steps: value.steps,
+            steps: [0,0],
             sampler: [],
-            denoise: value.denoise,
-            cfg: value.cfg,
+            denoise: [0,0],
+            cfg: [0,0],
             modelHash: [],
             modelName: [],
             faceRestoration: [],
             hypernet: [],
-            clipSkip: value.clipSkip,
-            width: value.width,
-            height: value.height,
+            clipSkip: [0,0],
+            width: [0,0],
+            height: [0,0],
             afterDate: new Date().getDate(),
             beforeDate: new Date().getDate()
           })
@@ -151,7 +151,7 @@ const ImageViewer = ({setCurrentPage}) => {
       query.tags = selectedFilters.tags
     }
 
-    if (selectedFilters.steps.length > 0) {
+    if (selectedFilters.steps.length > 0 && Math.max(...selectedFilters.steps) !== 0) {
       query.steps = selectedFilters.steps
     }
 
@@ -159,11 +159,11 @@ const ImageViewer = ({setCurrentPage}) => {
       query.sampler = selectedFilters.sampler
     }
 
-    if (selectedFilters.denoise.length > 0) {
+    if (selectedFilters.denoise.length > 0 && Math.max(...selectedFilters.denoise) !== 0) {
       query.denoise = selectedFilters.denoise
     }
 
-    if (selectedFilters.cfg.length > 0) {
+    if (selectedFilters.cfg.length > 0 && Math.max(...selectedFilters.cfg) !== 0) {
       query.cfg = selectedFilters.cfg
     }
 
@@ -183,15 +183,15 @@ const ImageViewer = ({setCurrentPage}) => {
       query.hypernet = selectedFilters.hypernet
     }
 
-    if (selectedFilters.clipSkip.length > 0) {
+    if (selectedFilters.clipSkip.length > 0 && Math.max(...selectedFilters.clipSkip) !== 0) {
       query.clipSkip = selectedFilters.clipSkip
     }
 
-    if (selectedFilters.width.length > 0) {
+    if (selectedFilters.width.length > 0 && Math.max(...selectedFilters.width) !== 0) {
       query.width = selectedFilters.width
     }
 
-    if (selectedFilters.height.length > 0) {
+    if (selectedFilters.height.length > 0 && Math.max(...selectedFilters.height) !== 0) {
       query.height = selectedFilters.height
     }
 
@@ -724,6 +724,43 @@ const ImageViewer = ({setCurrentPage}) => {
           <ListItem>
             <TextField
                 select
+                label="Model"
+                value={""}
+                onChange={(e) => {
+                  if (selectedFilters.modelName.find(
+                      f => f === e.target.value)) {
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      modelName: selectedFilters.modelName.filter(
+                          f => f !== e.target.value)
+                    })
+                  } else {
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      modelName: [...selectedFilters.modelName,
+                        possibleFilters.modelName.find(
+                            f => f === e.target.value)]
+                    })
+                  }
+                }}
+                fullWidth
+            >
+              {possibleFilters.modelName.map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    <Checkbox
+                        checked={selectedFilters.modelName.includes(
+                            option)}/>
+                    <Typography>
+                      {option}
+                    </Typography>
+                  </MenuItem>
+              ))}
+            </TextField>
+          </ListItem>
+
+          <ListItem>
+            <TextField
+                select
                 label="Face restoration"
                 value={""}
                 onChange={(e) => {
@@ -1082,7 +1119,6 @@ const ImageViewer = ({setCurrentPage}) => {
               </DialogNoPadding>
             </Dialog>
         )}
-
       </StyledBox>
   );
 };

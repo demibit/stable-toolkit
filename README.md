@@ -141,6 +141,9 @@ The latest releases can be found here. The format of releases in the case of `x.
   - [x] Updated db name (this means folders/tags might need to be readded when updating)
   - [x] Removed the need for Source/Index folders
   - [x] Added model name (if present) to be picked up for generation information
+    - Filtering via model name is also available
+  - [x] Fixed a bug where some of the newly generated images don't show up because they're outside of filter ranges.
+    - Filters with numbers now default to 0, but function the same way
   - [ ] Allow users to find the location of any image easily
   - [ ] Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster
   - [ ] Switch between images using arrows (and arrow keys)
