@@ -59,6 +59,7 @@ const ImageViewer = ({setCurrentPage}) => {
         denoise: [0, 0],
         cfg: [0, 0],
         modelHash: [],
+        modelName: [],
         faceRestoration: [],
         hypernet: [],
         clipSkip: [0, 0],
@@ -76,6 +77,7 @@ const ImageViewer = ({setCurrentPage}) => {
         denoise: [],
         cfg: [],
         modelHash: [],
+        modelName: [],
         faceRestoration: [],
         hypernet: [],
         clipSkip: [],
@@ -122,6 +124,7 @@ const ImageViewer = ({setCurrentPage}) => {
             denoise: value.denoise,
             cfg: value.cfg,
             modelHash: [],
+            modelName: [],
             faceRestoration: [],
             hypernet: [],
             clipSkip: value.clipSkip,
@@ -166,6 +169,10 @@ const ImageViewer = ({setCurrentPage}) => {
 
     if (selectedFilters.modelHash.length > 0) {
       query.modelHash = selectedFilters.modelHash
+    }
+
+    if (selectedFilters.modelName.length > 0) {
+      query.modelName = selectedFilters.modelName
     }
 
     if (selectedFilters.faceRestoration.length > 0) {

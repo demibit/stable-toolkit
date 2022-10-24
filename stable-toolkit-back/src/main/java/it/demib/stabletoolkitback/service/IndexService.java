@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor(onConstructor_ = @Autowired)
-public class IndexerService {
+public class IndexService {
 
   private final PNGTextExtractor pngTextExtractor;
 
@@ -134,6 +134,7 @@ public class IndexerService {
                       Objects.nonNull(info.get("CFG scale")) ? Double.valueOf(info.get("CFG scale"))
                           : null)
                   .modelHash(info.get("Model hash"))
+                  .modelName(info.get("Model"))
                   .faceRestoration(info.get("Face restoration"))
                   .hypernet(info.get("Hypernet"))
                   .clipSkip(Objects.nonNull(info.get("Clip skip")) ? Integer.valueOf(

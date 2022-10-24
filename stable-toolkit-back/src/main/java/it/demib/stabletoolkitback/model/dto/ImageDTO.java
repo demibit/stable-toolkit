@@ -30,6 +30,7 @@ public class ImageDTO {
   private Object denoise;
   private Object cfg;
   private Object modelHash;
+  private Object modelName;
   private Object faceRestoration;
   private Object hypernet;
   private Object clipSkip;

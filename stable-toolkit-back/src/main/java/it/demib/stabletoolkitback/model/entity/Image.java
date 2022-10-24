@@ -34,6 +34,7 @@ public class Image {
   private Double denoise;
   private Double cfg;
   private String modelHash;
+  private String modelName;
   private String faceRestoration;
   private String hypernet;
   private Integer clipSkip;

@@ -59,6 +59,7 @@ public class ImageService {
     List<Double> denoise = new ArrayList<>(List.of(Double.MAX_VALUE, Double.MIN_VALUE));
     List<Double> cfg = new ArrayList<>(List.of(Double.MAX_VALUE, Double.MIN_VALUE));
     List<String> modelHash = new ArrayList<>();
+    List<String> modelName = new ArrayList<>();
     List<String> faceRestoration = new ArrayList<>();
     List<String> hypernet = new ArrayList<>();
     List<Integer> clipSkip = new ArrayList<>(
@@ -108,6 +109,9 @@ public class ImageService {
       if (Objects.nonNull(img.getModelHash()) && !modelHash.contains(img.getModelHash())) {
         modelHash.add(img.getModelHash());
       }
+      if (Objects.nonNull(img.getModelName()) && !modelHash.contains(img.getModelName())) {
+        modelHash.add(img.getModelName());
+      }
       if (Objects.nonNull(img.getFaceRestoration()) && !faceRestoration.contains(
           img.getFaceRestoration())) {
         faceRestoration.add(img.getFaceRestoration());
@@ -151,6 +155,7 @@ public class ImageService {
         .denoise(denoise)
         .cfg(cfg)
         .modelHash(modelHash)
+        .modelName(modelName)
         .faceRestoration(faceRestoration)
         .hypernet(hypernet)
         .clipSkip(clipSkip)
@@ -223,6 +228,10 @@ public class ImageService {
       toAggregateBy.add(
           Aggregates.match(Filters.in("modelHash", imageQueryParameters.getModelHash())));
     }
+    if (Objects.nonNull(imageQueryParameters.getModelName())) {
+      toAggregateBy.add(
+          Aggregates.match(Filters.in("modelName", imageQueryParameters.getModelName())));
+    }
     if (Objects.nonNull(imageQueryParameters.getFaceRestoration())) {
       toAggregateBy.add(
           Aggregates.match(
@@ -289,6 +298,7 @@ public class ImageService {
             .denoise(document.get("denoise"))
             .cfg(document.get("cfg"))
             .modelHash(document.get("modelHash"))
+            .modelName(document.get("modelName"))
             .faceRestoration(document.get("faceRestoration"))
             .hypernet(document.get("hypernet"))
             .clipSkip(document.get("clipSkip"))
