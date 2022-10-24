@@ -140,6 +140,7 @@ The latest releases can be found here. The format of releases in the case of `x.
 - 2.1.0
   - [x] Updated db name (this means folders/tags might need to be readded when updating)
   - [x] Removed the need for Source/Index folders
+  - [x] Added model name (if present) to be picked up for generation information
   - [ ] Allow users to find the location of any image easily
   - [ ] Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster
   - [ ] Switch between images using arrows (and arrow keys)
