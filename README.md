@@ -124,9 +124,11 @@ The latest releases can be found here. The format of releases in the case of `x.
   - [ ] Better support for different monitor sizes
   - [ ] Mass tagging (for tags not present in the prompt)
   - [ ] Better statistics
-- 2.2.0
   - [ ] Mass moving (currently, only in-view images get moved when selecting all and moving)
   - [ ] Indexing is done via _Java Streams_ currently. Ideally this should be done through db queries to make things faster
+- 2.2.0
+  - [ ] Switch between images using arrows (and arrow keys)
+  - [ ] Dropdowns for drawer sections (easier navigation of filters)
 - 2.1.0
   - [x] Updated db name (this means folders/tags might need to be readded when updating)
   - [x] Removed the need for Source/Index folders
@@ -135,8 +137,6 @@ The latest releases can be found here. The format of releases in the case of `x.
   - [x] Fixed a bug where some of the newly generated images don't show up because they're outside of filter ranges.
     - Filters with numbers now default to 0, but function the same way
   - [ ] Allow users to find the location of any image easily
-  - [ ] Switch between images using arrows (and arrow keys)
-  - [ ] Dropdowns for drawer sections (easier navigation of filters)
 - 2.0.3
   - Better png image chunk parsing (previously failed at some null values)
 - 2.0.2
