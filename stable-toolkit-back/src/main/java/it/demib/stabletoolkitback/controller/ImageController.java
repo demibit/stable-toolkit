@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.bson.Document;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -30,21 +30,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/image")
 @AllArgsConstructor(onConstructor_ = @Autowired)
 @CrossOrigin
+@Slf4j
 public class ImageController {
 
   private final ImageService imageService;
 
   @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<Resource> getImage(@RequestParam String url) throws IOException {
-    String strippedUrl = url.split("\\?")[0];
+  public ResponseEntity<Resource> getImage(@RequestParam String path) throws IOException {
+    String strippedUrl = path.split("\\?")[0];
 
     final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
         strippedUrl
     )));
+
     return ResponseEntity
         .status(HttpStatus.OK)
         .contentLength(inputStream.contentLength())
         .body(inputStream);
+  }
+
+  @GetMapping("/find")
+  public void findImageInFolder(@RequestParam String path) {
+    imageService.findImageInFolder(path);
   }
 
   @DeleteMapping
@@ -53,6 +60,7 @@ public class ImageController {
 
     return true;
   }
+
   @PutMapping
   public List<Image> updateImages(@RequestBody List<Image> images) {
     return imageService.saveAll(images);

@@ -1,6 +1,5 @@
 package it.demib.stabletoolkitback.controller;
 
-import it.demib.stabletoolkitback.service.ImageService;
 import it.demib.stabletoolkitback.service.TagService;
 import java.util.List;
 import lombok.AllArgsConstructor;

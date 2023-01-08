@@ -24,6 +24,7 @@ public class ImageQueryParameters {
   private List<Double> denoise;
   private List<Double> cfg;
   private List<String> modelHash;
+  private List<String> modelName;
   private List<String> faceRestoration;
   private List<String> hypernet;
   private List<Integer> clipSkip;

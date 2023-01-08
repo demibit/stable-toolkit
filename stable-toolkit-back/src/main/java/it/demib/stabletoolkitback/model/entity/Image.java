@@ -2,7 +2,6 @@ package it.demib.stabletoolkitback.model.entity;
 
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +34,7 @@ public class Image {
   private Double denoise;
   private Double cfg;
   private String modelHash;
+  private String modelName;
   private String faceRestoration;
   private String hypernet;
   private Integer clipSkip;

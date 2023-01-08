@@ -4,7 +4,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.Sorts;
-import it.demib.stabletoolkitback.constant.FolderType;
 import it.demib.stabletoolkitback.model.dto.ImageDTO;
 import it.demib.stabletoolkitback.model.dto.ImageQueryParameters;
 import it.demib.stabletoolkitback.model.dto.MoveDTO;
@@ -27,7 +26,6 @@ import java.util.stream.Stream;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
@@ -61,6 +59,7 @@ public class ImageService {
     List<Double> denoise = new ArrayList<>(List.of(Double.MAX_VALUE, Double.MIN_VALUE));
     List<Double> cfg = new ArrayList<>(List.of(Double.MAX_VALUE, Double.MIN_VALUE));
     List<String> modelHash = new ArrayList<>();
+    List<String> modelName = new ArrayList<>();
     List<String> faceRestoration = new ArrayList<>();
     List<String> hypernet = new ArrayList<>();
     List<Integer> clipSkip = new ArrayList<>(
@@ -110,6 +109,9 @@ public class ImageService {
       if (Objects.nonNull(img.getModelHash()) && !modelHash.contains(img.getModelHash())) {
         modelHash.add(img.getModelHash());
       }
+      if (Objects.nonNull(img.getModelName()) && !modelHash.contains(img.getModelName())) {
+        modelName.add(img.getModelName());
+      }
       if (Objects.nonNull(img.getFaceRestoration()) && !faceRestoration.contains(
           img.getFaceRestoration())) {
         faceRestoration.add(img.getFaceRestoration());
@@ -153,6 +155,7 @@ public class ImageService {
         .denoise(denoise)
         .cfg(cfg)
         .modelHash(modelHash)
+        .modelName(modelName)
         .faceRestoration(faceRestoration)
         .hypernet(hypernet)
         .clipSkip(clipSkip)
@@ -225,6 +228,10 @@ public class ImageService {
       toAggregateBy.add(
           Aggregates.match(Filters.in("modelHash", imageQueryParameters.getModelHash())));
     }
+    if (Objects.nonNull(imageQueryParameters.getModelName())) {
+      toAggregateBy.add(
+          Aggregates.match(Filters.in("modelName", imageQueryParameters.getModelName())));
+    }
     if (Objects.nonNull(imageQueryParameters.getFaceRestoration())) {
       toAggregateBy.add(
           Aggregates.match(
@@ -291,6 +298,7 @@ public class ImageService {
             .denoise(document.get("denoise"))
             .cfg(document.get("cfg"))
             .modelHash(document.get("modelHash"))
+            .modelName(document.get("modelName"))
             .faceRestoration(document.get("faceRestoration"))
             .hypernet(document.get("hypernet"))
             .clipSkip(document.get("clipSkip"))
@@ -316,15 +324,24 @@ public class ImageService {
     List<Image> currentImages = findAll();
     List<String> currentUserTags = tagService.findAll();
 
-    for (Image image : currentImages) {
-      image.setTags(
-          currentUserTags.stream().filter(s -> TagParser.isContain(image.getPositivePrompt(), s))
-              .collect(Collectors.toList()));
+    if (currentUserTags.size() > 0) {
+      for (Image image : currentImages) {
+        image.setTags(
+            currentUserTags.stream().filter(s -> TagParser.isContain(image.getPositivePrompt(), s))
+                .collect(Collectors.toList()));
+      }
+      saveAll(currentImages);
     }
-
-    saveAll(currentImages);
   }
 
+  public void findImageInFolder(String path) {
+    try {
+      String treatedPath = path.split("\\?")[0].replace("/", "\\");
+      new ProcessBuilder().command("explorer.exe", "/select,", treatedPath).start();
+    } catch (Exception e) {
+      log.warn("Unable to find the specified image at path: {}", path);
+    }
+  }
 
   public List<Image> saveAll(List<Image> images) {
     List<Pair<Image, MoveDTO>> newListOfImages = images.stream().filter(image ->
@@ -333,27 +350,15 @@ public class ImageService {
                 .orElseThrow()
                 .getLocation()
                 .equals(image.getLocation()))
-        .map(image -> {
-
-          String newFileName = RandomStringUtils.randomNumeric(16) + ".png";
-
-          boolean movingFromSourceFolder = folderService.getFolders()
-              .stream()
-              .filter(folder ->
-                  folder.getFolderType().equals(FolderType.SOURCE))
-              .anyMatch(folder -> folder.getPath()
-                  .equals(imageRepository.findById(image.get_id()).orElseThrow().getLocation()));
-
-          return Pair.of(image.toBuilder()
-                  .fileName(movingFromSourceFolder ? newFileName : image.getFileName())
-                  .build(),
-              MoveDTO.builder()
-                  .from(imageRepository.findById(image.get_id()).orElseThrow().getLocation())
-                  .to(image.getLocation())
-                  .fileName(image.getFileName())
-                  .newFileName(movingFromSourceFolder ? newFileName : image.getFileName())
-                  .build());
-        }).toList();
+        .map(image -> Pair.of(image.toBuilder()
+                .fileName(image.getFileName())
+                .build(),
+            MoveDTO.builder()
+                .from(imageRepository.findById(image.get_id()).orElseThrow().getLocation())
+                .to(image.getLocation())
+                .fileName(image.getFileName())
+                .newFileName(image.getFileName())
+                .build())).toList();
 
     newListOfImages.stream()
         .parallel()

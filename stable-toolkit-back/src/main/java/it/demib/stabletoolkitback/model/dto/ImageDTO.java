@@ -3,16 +3,11 @@ package it.demib.stabletoolkitback.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import java.time.Instant;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
@@ -35,6 +30,7 @@ public class ImageDTO {
   private Object denoise;
   private Object cfg;
   private Object modelHash;
+  private Object modelName;
   private Object faceRestoration;
   private Object hypernet;
   private Object clipSkip;

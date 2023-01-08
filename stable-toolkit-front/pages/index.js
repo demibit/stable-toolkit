@@ -5,7 +5,6 @@ import ImageViewer from "../components/full/ImageViewer";
 
 export const pages = {
   IMAGE_VIEWER: "image-viewer",
-  PROMPT_GENERATOR: "prompt-generator"
 }
 
 const Home = () => {
@@ -21,7 +20,6 @@ const Home = () => {
       >
         {currentPage === pages.IMAGE_VIEWER && <ImageViewer
             setCurrentPage={setCurrentPage}/>}
-        {/*{currentPage === pages.PROMPT_GENERATOR && <PromptGenerator setCurrentPage={setCurrentPage} />}*/}
       </GridFullScreen>
   );
 };

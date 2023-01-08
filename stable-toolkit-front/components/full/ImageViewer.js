@@ -34,7 +34,8 @@ import {
   StyledBox,
   TextFieldMargin,
   TitleListItem,
-  TypographyCenter
+  TypographyCenter,
+  TypographyCenterCursorPointer
 } from "../style/StyleProvider";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -45,17 +46,6 @@ import FolderIcon from '@mui/icons-material/Folder';
 import InfiniteScroll from "react-infinite-scroll-component";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SyncIcon from '@mui/icons-material/Sync';
-
-const folderTypes = [
-  {
-    value: 'SOURCE',
-    label: 'Source',
-  },
-  {
-    value: 'INDEX',
-    label: 'Index',
-  }
-];
 
 const defaultNumberOfImagesToShow = 50;
 const defaultScale = 6;
@@ -70,6 +60,7 @@ const ImageViewer = ({setCurrentPage}) => {
         denoise: [0, 0],
         cfg: [0, 0],
         modelHash: [],
+        modelName: [],
         faceRestoration: [],
         hypernet: [],
         clipSkip: [0, 0],
@@ -87,6 +78,7 @@ const ImageViewer = ({setCurrentPage}) => {
         denoise: [],
         cfg: [],
         modelHash: [],
+        modelName: [],
         faceRestoration: [],
         hypernet: [],
         clipSkip: [],
@@ -117,7 +109,6 @@ const ImageViewer = ({setCurrentPage}) => {
   const [selectedTagGroup, setSelectedTagGroup] = useState('add');
   const [selectedLocationGroup, setSelectedLocationGroup] = useState('add');
 
-  const [folderType, setFolderType] = useState("");
   const [folderPath, setFolderPath] = useState("");
 
   const getImageFilters = () => {
@@ -129,16 +120,17 @@ const ImageViewer = ({setCurrentPage}) => {
           setSelectedFilters({
             location: [],
             tags: [],
-            steps: value.steps,
+            steps: [0, 0],
             sampler: [],
-            denoise: value.denoise,
-            cfg: value.cfg,
+            denoise: [0, 0],
+            cfg: [0, 0],
             modelHash: [],
+            modelName: [],
             faceRestoration: [],
             hypernet: [],
-            clipSkip: value.clipSkip,
-            width: value.width,
-            height: value.height,
+            clipSkip: [0, 0],
+            width: [0, 0],
+            height: [0, 0],
             afterDate: new Date().getDate(),
             beforeDate: new Date().getDate()
           })
@@ -160,7 +152,8 @@ const ImageViewer = ({setCurrentPage}) => {
       query.tags = selectedFilters.tags
     }
 
-    if (selectedFilters.steps.length > 0) {
+    if (selectedFilters.steps.length > 0 && Math.max(...selectedFilters.steps)
+        !== 0) {
       query.steps = selectedFilters.steps
     }
 
@@ -168,16 +161,22 @@ const ImageViewer = ({setCurrentPage}) => {
       query.sampler = selectedFilters.sampler
     }
 
-    if (selectedFilters.denoise.length > 0) {
+    if (selectedFilters.denoise.length > 0 && Math.max(
+        ...selectedFilters.denoise) !== 0) {
       query.denoise = selectedFilters.denoise
     }
 
-    if (selectedFilters.cfg.length > 0) {
+    if (selectedFilters.cfg.length > 0 && Math.max(...selectedFilters.cfg)
+        !== 0) {
       query.cfg = selectedFilters.cfg
     }
 
     if (selectedFilters.modelHash.length > 0) {
       query.modelHash = selectedFilters.modelHash
+    }
+
+    if (selectedFilters.modelName.length > 0) {
+      query.modelName = selectedFilters.modelName
     }
 
     if (selectedFilters.faceRestoration.length > 0) {
@@ -188,15 +187,18 @@ const ImageViewer = ({setCurrentPage}) => {
       query.hypernet = selectedFilters.hypernet
     }
 
-    if (selectedFilters.clipSkip.length > 0) {
+    if (selectedFilters.clipSkip.length > 0 && Math.max(
+        ...selectedFilters.clipSkip) !== 0) {
       query.clipSkip = selectedFilters.clipSkip
     }
 
-    if (selectedFilters.width.length > 0) {
+    if (selectedFilters.width.length > 0 && Math.max(...selectedFilters.width)
+        !== 0) {
       query.width = selectedFilters.width
     }
 
-    if (selectedFilters.height.length > 0) {
+    if (selectedFilters.height.length > 0 && Math.max(...selectedFilters.height)
+        !== 0) {
       query.height = selectedFilters.height
     }
 
@@ -211,6 +213,14 @@ const ImageViewer = ({setCurrentPage}) => {
     api.postImageFilter(query).then(value => {
       setImages(value)
     })
+  }
+
+  const getImagePath = (imageLocation, imageFileName) => {
+    return imageLocation.replaceAll("\\", "/") + "/" + imageFileName;
+  }
+
+  const findImage = (imageLocation, imageFileName) => {
+    api.findImage(getImagePath(imageLocation, imageFileName))
   }
 
   const putImages = (e) => {
@@ -251,12 +261,10 @@ const ImageViewer = ({setCurrentPage}) => {
     const foldersToPut = [{
       name: splitPath[splitPath.length - 1],
       path: folderPath,
-      folderType: folderType
     }]
 
     api.putFolder(foldersToPut).then(value => {
       setFolderPath("")
-      setFolderType("")
       getFolders()
     });
   }
@@ -294,15 +302,16 @@ const ImageViewer = ({setCurrentPage}) => {
   }
 
   useEffect(() => {
-    runGets()
-  }, [numberOfImagesToShow]);
+    if (selectedImages.length === 0) {
+      runGets()
+    }
+  }, [numberOfImagesToShow, selectedImages.length]);
 
   return (
       <StyledBox>
         <InfiniteScroll next={() => {
           setNumberOfImagesToShow(
               numberOfImagesToShow + defaultNumberOfImagesToShow)
-          getImages();
         }} hasMore={numberOfImagesToShow <= images.length}
                         loader={<TypographyCenter>Loading...</TypographyCenter>}
                         dataLength={images.length}>
@@ -313,8 +322,8 @@ const ImageViewer = ({setCurrentPage}) => {
                 <ImageListItem item={"true"} key={index}>
                   <Image
                       id={image.fileName}
-                      src={`${process.env.LOCALHOST8080}/image?url=${image.location.replaceAll(
-                          "\\", "/")}/${image.fileName}`}
+                      src={`${process.env.HOSTPATH}/image?path=${getImagePath(
+                          image.location, image.fileName)}`}
                       alt=""
                       layout="intrinsic"
                       width={image.width}
@@ -334,9 +343,11 @@ const ImageViewer = ({setCurrentPage}) => {
                               justifyContent="center"
                               alignItems="center">
                           <Grid item xs={10}>
-                            <TypographyCenter>
+                            <TypographyCenterCursorPointer
+                                onClick={() => findImage(image.location,
+                                    image.fileName)}>
                               {shortenFileName(image.fileName)}
-                            </TypographyCenter>
+                            </TypographyCenterCursorPointer>
                           </Grid>
                           <Grid item xs={2}>
                             <Checkbox checked={selectedImages.indexOf(
@@ -392,23 +403,6 @@ const ImageViewer = ({setCurrentPage}) => {
 
           {selectedLocationGroup === 'add' &&
               <Fragment>
-                <ListItem>
-                  <TextField
-                      select
-                      label="Type"
-                      value={folderType}
-                      onChange={(e) => {
-                        setFolderType(e.target.value)
-                      }}
-                      fullWidth
-                  >
-                    {folderTypes.map((option, index) => (
-                        <MenuItem key={index} value={option.value}>
-                          {option.label}
-                        </MenuItem>
-                    ))}
-                  </TextField>
-                </ListItem>
                 <ListItem>
                   <TextField
                       label="Path"
@@ -747,6 +741,43 @@ const ImageViewer = ({setCurrentPage}) => {
           <ListItem>
             <TextField
                 select
+                label="Model"
+                value={""}
+                onChange={(e) => {
+                  if (selectedFilters.modelName.find(
+                      f => f === e.target.value)) {
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      modelName: selectedFilters.modelName.filter(
+                          f => f !== e.target.value)
+                    })
+                  } else {
+                    setSelectedFilters({
+                      ...selectedFilters,
+                      modelName: [...selectedFilters.modelName,
+                        possibleFilters.modelName.find(
+                            f => f === e.target.value)]
+                    })
+                  }
+                }}
+                fullWidth
+            >
+              {possibleFilters.modelName.map((option, index) => (
+                  <MenuItem key={index} value={option}>
+                    <Checkbox
+                        checked={selectedFilters.modelName.includes(
+                            option)}/>
+                    <Typography>
+                      {option}
+                    </Typography>
+                  </MenuItem>
+              ))}
+            </TextField>
+          </ListItem>
+
+          <ListItem>
+            <TextField
+                select
                 label="Face restoration"
                 value={""}
                 onChange={(e) => {
@@ -994,7 +1025,7 @@ const ImageViewer = ({setCurrentPage}) => {
                       <CenterGrid item xs={scale}>
                         <Image
                             id={imageToDisplay.fileName}
-                            src={`${process.env.LOCALHOST8080}/image?url=${imageToDisplay.location.replaceAll(
+                            src={`${process.env.HOSTPATH}/image?path=${imageToDisplay.location.replaceAll(
                                 "\\", "/")}/${imageToDisplay.fileName}`}
                             alt=""
                             layout="responsive"
@@ -1105,7 +1136,6 @@ const ImageViewer = ({setCurrentPage}) => {
               </DialogNoPadding>
             </Dialog>
         )}
-
       </StyledBox>
   );
 };

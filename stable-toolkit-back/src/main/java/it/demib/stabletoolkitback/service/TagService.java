@@ -1,6 +1,5 @@
 package it.demib.stabletoolkitback.service;
 
-import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.model.entity.TagHolder;
 import it.demib.stabletoolkitback.repository.TagRepository;
 import java.util.ArrayList;

@@ -70,6 +70,10 @@ export const TypographyCenter = styled(Typography)`
   width: 100%;
 `;
 
+export const TypographyCenterCursorPointer = styled(TypographyCenter)`
+  cursor: pointer;
+`
+
 export const GridMaxHeight = styled(Grid)`
   height: 100%;
 `

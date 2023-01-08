@@ -19,7 +19,7 @@ public class TagParser implements TextParser<List<String>, Pair<List<String>, St
         .collect(Collectors.toList());
   }
 
-  public static boolean isContain(String source, String subItem){
+  public static boolean isContain(String source, String subItem) {
     return Objects.nonNull(source) && Objects.nonNull(subItem) && Pattern.compile(
         "\\b" + subItem + "\\b").matcher(source).find();
   }
