@@ -111,32 +111,22 @@ This is where you can see how many images are currently displayed, add/delete lo
 The latest releases can be found here. The format of releases in the case of `x.y.z` are:
 
 - `x`: Major releases that can include redesigns/significat features/changes that might not be compatible with previous versions
-- `x`: Minor releases that include new/changed/removed features, and various bug fixes
-- `x`: Patch releases inbetween feature rollouts typically for important bug fixes
+- `y`: Minor releases that include new/changed/removed features, and various bug fixes
+- `z`: Patch releases inbetween feature rollouts typically for important bug fixes
 
 ## Luna 2.x.x
 
 - 2.x.x
-  - [ ] Automatic aeshetic scoring/sorting (?)
-  - [ ] Prompt generator (output can be read via using the web-ui script, see the files above, place it in the _\web-ui\scripts_ folder)
-    - You can name/save/export/import your and others' prompt generation settings
-    - Prompt boxes and sliders for generating a text file with random values.
-    - Place **_.txt_** files into _\stable-toolkit\back\db\wildcards_ with the file name of the wildcard you want to use. (eg. "numbers.txt")
-    - The possible prompts should be separated by line. If you are still unsure how it should look, check the example file at _\stable-toolkit\back\db\wildcards\numbers.txt_
-    - When creating your prompts you can use the format \_\_numbers\_\_ to represent prompts you want to randomize.
-      - You can still use the same nomenclature you use in the web-ui (eg. _(\_\_dogTypes\_\_\:1.15)_ will mean that _dogTypes_ will be replaced with prompts from your _dogTypes.txt_ file)
-      - You can do _(persian cat:0.9|1.2)_ to indicate that this should be replaced with a random number between _0.9_ and _1.2_
-    - You are able to generate the same exact prompt x number of times, up to the whole prompts/settings being random
   - [ ] Expose settings:
-    - Maximum and minimum limits for each of the prompt generator settings
     - Empty logging file (along with it's current size)
-    - Empty logs on Re-Index (off by default, not recommended as logs are very useful in finding bugs, but it's an option for those who are confident)
     - Reset settings button
     - Switching image loaders (?) (can be done manually by editing \*\front-code\next.config.js)
-    - Add option for opting in/out of name randomization on move, eliminating the need for folder types
   - [ ] Better support for different monitor sizes
   - [ ] Mass tagging (for tags not present in the prompt)
   - [ ] Better statistics
+- 2.2.0
+  - [ ] Mass moving (currently, only in-view images get moved when selecting all and moving)
+  - [ ] Indexing is done via _Java Streams_ currently. Ideally this should be done through db queries to make things faster
 - 2.1.0
   - [x] Updated db name (this means folders/tags might need to be readded when updating)
   - [x] Removed the need for Source/Index folders
@@ -145,10 +135,8 @@ The latest releases can be found here. The format of releases in the case of `x.
   - [x] Fixed a bug where some of the newly generated images don't show up because they're outside of filter ranges.
     - Filters with numbers now default to 0, but function the same way
   - [ ] Allow users to find the location of any image easily
-  - [ ] Indexing is done via *Java Stream*s currently. Ideally this should be done through db queries to make things faster
   - [ ] Switch between images using arrows (and arrow keys)
   - [ ] Dropdowns for drawer sections (easier navigation of filters)
-  - [ ] Mass moving (currently, only in-view images get moved when selecting all and moving)
 - 2.0.3
   - Better png image chunk parsing (previously failed at some null values)
 - 2.0.2
