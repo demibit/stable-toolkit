@@ -3,7 +3,7 @@ import {fetchWrapper} from "../fetchWrapper/fetchWrapper";
 
 const getImageFilter = async () => {
   const response = await fetchWrapper.get(
-      `${process.env.LOCALHOST8080}/image/filter`
+      `${process.env.HOSTPATH}/image/filter`
   );
 
   return response;
@@ -11,15 +11,23 @@ const getImageFilter = async () => {
 
 const postImageFilter = async (imageFilter) => {
   const response = await fetchWrapper.post(
-      `${process.env.LOCALHOST8080}/image/filter`, imageFilter
+      `${process.env.HOSTPATH}/image/filter`, imageFilter
   );
 
   return response;
 };
 
+const findImage = async (path) => {
+  const response = await fetchWrapper.get(
+      `${process.env.HOSTPATH}/image/find?path=${path}`
+  );
+
+  return response;
+}
+
 const putImage = async (images) => {
   const response = await fetchWrapper.put(
-      `${process.env.LOCALHOST8080}/image`, images
+      `${process.env.HOSTPATH}/image`, images
   );
 
   return response;
@@ -27,7 +35,7 @@ const putImage = async (images) => {
 
 const getTag = async () => {
   const response = await fetchWrapper.get(
-      `${process.env.LOCALHOST8080}/tag`
+      `${process.env.HOSTPATH}/tag`
   );
 
   return response;
@@ -35,7 +43,7 @@ const getTag = async () => {
 
 const putTag = async (tags) => {
   const response = await fetchWrapper.put(
-      `${process.env.LOCALHOST8080}/tag`, tags
+      `${process.env.HOSTPATH}/tag`, tags
   );
 
   return response;
@@ -43,7 +51,7 @@ const putTag = async (tags) => {
 
 const deleteTag = async (tags) => {
   const response = await fetchWrapper.delete(
-      `${process.env.LOCALHOST8080}/tag`, tags
+      `${process.env.HOSTPATH}/tag`, tags
   );
 
   return response;
@@ -51,7 +59,7 @@ const deleteTag = async (tags) => {
 
 const getFolder = async () => {
   const response = await fetchWrapper.get(
-      `${process.env.LOCALHOST8080}/folder`
+      `${process.env.HOSTPATH}/folder`
   );
 
   return response;
@@ -59,7 +67,7 @@ const getFolder = async () => {
 
 const putFolder = async (folders) => {
   const response = await fetchWrapper.put(
-      `${process.env.LOCALHOST8080}/folder`, folders
+      `${process.env.HOSTPATH}/folder`, folders
   );
 
   return response;
@@ -67,7 +75,7 @@ const putFolder = async (folders) => {
 
 const deleteFolder = async (folders) => {
   const response = await fetchWrapper.delete(
-      `${process.env.LOCALHOST8080}/folder`, folders
+      `${process.env.HOSTPATH}/folder`, folders
   );
 
   return response;
@@ -75,7 +83,7 @@ const deleteFolder = async (folders) => {
 
 const getSettings = async () => {
   const response = await fetchWrapper.get(
-      `${process.env.LOCALHOST8080}/setting`
+      `${process.env.HOSTPATH}/setting`
   );
 
   return response;
@@ -83,7 +91,7 @@ const getSettings = async () => {
 
 const putSetting = async (settings) => {
   const response = await fetchWrapper.put(
-      `${process.env.LOCALHOST8080}/setting`, settings
+      `${process.env.HOSTPATH}/setting`, settings
   );
 
   return response;
@@ -91,7 +99,7 @@ const putSetting = async (settings) => {
 
 const deleteSetting = async (settings) => {
   const response = await fetchWrapper.delete(
-      `${process.env.LOCALHOST8080}/setting`, settings
+      `${process.env.HOSTPATH}/setting`, settings
   );
 
   return response;
@@ -99,7 +107,7 @@ const deleteSetting = async (settings) => {
 
 const triggerReIndex = async () => {
   const response = await fetchWrapper.delete(
-      `${process.env.LOCALHOST8080}/image`
+      `${process.env.HOSTPATH}/image`
   );
 
   return response;
@@ -108,6 +116,7 @@ const triggerReIndex = async () => {
 export const api = {
   getImageFilter,
   postImageFilter,
+  findImage,
   putImage,
   getTag,
   putTag,

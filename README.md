@@ -1,4 +1,4 @@
-# stable-toolkit (2.0.3-luna)
+# stable-toolkit (2.1.0-luna)
 
 ![](miso.png) ![](luna.png)
 
@@ -8,7 +8,7 @@ This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](h
 
 ## Disclaimers
 
-- **\*The toolkit moves files.** I am **not** responsible for any data loss, back up your images before using the toolkit. It should not destroy anything, but setting it up wrong may cause unwanted consequences.\*
+- _**The toolkit moves files.** I am **not** responsible for any data loss, back up your images before using the toolkit. It should not destroy anything, but setting it up wrong may cause unwanted consequences._
 - _The toolkit is fully offline._
 - _I do not, and will not support deletion operations. Create a "deleted" folder, move unwanted images there, and delete them manually. See this is a double confirmation for deletion._
 - _If you do not follow the installation instructions precisely it is not likely you will succeed in doing it. I **highly** recommend following the instructions for **your** sake._
@@ -19,16 +19,31 @@ This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](h
 The below are needed to run the application. I think this includes everything, but open a ticket if you're struggling after getting them.
 
 - [Git](https://git-scm.com/downloads) (used to download the source code)
-- [MongoDB](https://www.mongodb.com/try/download/community) (used for db, compass recommended)
+- [MongoDB](https://www.mongodb.com/try/download/community) (used for database, compass recommended)
 - [NodeJS LTS](https://nodejs.org/en/) (used to compile/run the frontend) (must be added to path)
 - [Java OpenJDK **_19_**](https://jdk.java.net/java-se-ri/19) (the Windows 11 version works for Windows 10 as well) (used to run the backend) (must be added to path)
 - [Maven](https://maven.apache.org/download.cgi) (used to compile backend) (must be added to path)
 - [AUTOMATIC1111's SD Implementation](https://github.com/AUTOMATIC1111/stable-diffusion-webui) (the web-ui the toolkit imports images from)
 
-## Constraints
+## Installation
+
+This is a one time setup after which you will be able to run the toolkit via "run-toolkit.bat". Closing the CMD will close the toolkit
+
+1.  Check that you have everything listed under the "Requirements" header
+2.  Search "environment variables"
+    - Open "Edit the system environment variables"
+    - Click "Environment variables..."
+    - Your user/system variables should look similar to mine:
+    - ![](01.png)
+3.  Download the _download-toolkit.bat_ from above and place it where you want the toolkit to be downloaded. (It will create a new folder)
+4.  You can then run _run-toolkit.bat_ to launch the toolkit and acess it from *http://127.0.0.1:8801/*
+5.  You can use _update-toolkit.bat_ to update and/or recompile the toolkit and run it as in 4.
+6.  Use the cogwheel on the bottom right to add see the various settings, and use the weird upside down pyramid to filter your images
+
+## Limitations
 
 - Only .png files get processed at the moment
-- "Save text information about generation parameters as chunks to png files" _must_ be enabled in the web-ui to use automatic tagging and save prompt parameters
+- If you want automatic tagging/filtering, "Save text information about generation parameters as chunks to png files" should be enabled in the web-ui
 
 ## Troubleshooting
 
@@ -51,34 +66,34 @@ If anything doesn't make sense the "Usage" section below should explain it in de
 - Easily view and sort your images into different folders, or tags
   - Create your tags ("cats" or "dogs")
   - If your positive prompt has these words in it, your image will automatically be tagged with it
-  - Additionally, you're able to sort by image generation parameters
+  - You're able to filter by these parameters:
+    - Image location (folder it's in)
+    - Tags
+    - Sample steps
+    - Sampler
+    - Denoise
+    - CFG
+    - Model hash
+    - Model
+    - Face restoration
+    - Hypernet
+    - Clip skip
+    - Image width
+    - Image height
+    - Image date (images created after/before a date)
 - Confirm version via the _Spring_ CMD. It should match the version that's on the top of this page.
-- View your images immidiately after generation
+- View your images immediately after generation
+- Click the image name to find it in explorer
 
-## Known Bugs
+## Verified Bugs
 
 Generally, if you follow the steps in _Troubleshooting_, it should fix most of your problems.
 
-- None confirmed as of 2.0.3-luna release
+- None verified as of 2.1.0-luna release
 
 # Usage
 
 If you follow the steps in this section you should be able to run the toolkit with ease
-
-## Installation
-
-This is a one time setup after which you will be able to run the toolkit via "run-toolkit.bat". Closing the CMD will close the toolkit
-
-1.  Check that you have everything listed under the "Requirements" header
-2.  Search "environment variables"
-    - Open "Edit the system environment variables"
-    - Click "Environment variables..."
-    - Your user/system variables should look similar to mine:
-    - ![](01.png)
-3.  Download the _download-toolkit.bat_ from above and place it where you want the toolkit to be downloaded. (It will create a new folder)
-4.  You can then run _run-toolkit.bat_ to launch the toolkit and acess it from *http://127.0.0.1:8801/*
-5.  You can use _update-toolkit.bat_ to update and recompile the toolkit and run it as in 4.
-6.  Use the cogwheel on the bottom right to add see the various settings, and use the weird upside down pyramid to filter your images
 
 ## Utilities
 
@@ -104,39 +119,39 @@ Using the checkbox selects all images, and selecting a folder from the dropdown 
 
 ### Settings
 
-This is where you can see how many images are currently displayed, add/delete locations, and add/delete tags. Re-Index is quite useful when something goes wrong, or the image db needs to be remade. Try this first when something doesn't display or goes wrong.
+This is where you can see how many images are currently displayed, add/delete locations, and add/delete tags. Re-Index is quite useful when something goes wrong, or the image database needs to be remade. Try this first when something doesn't display or goes wrong.
 
 # Releases
 
 The latest releases can be found here. The format of releases in the case of `x.y.z` are:
 
-- `x`: Major releases that can include redesigns/significat features/changes that might not be compatible with previous versions
+- `x`: Major releases that can include redesigns/significant features/changes that might not be compatible with previous versions
 - `y`: Minor releases that include new/changed/removed features, and various bug fixes
 - `z`: Patch releases inbetween feature rollouts typically for important bug fixes
 
-## Luna 2.x.x
+## Luna
 
-- 2.x.x
-  - [ ] Expose settings:
-    - Empty logging file (along with it's current size)
+- 2.y.z (planned)
+  - Expose settings:
+    - Empty logging file (along with its current size)
     - Reset settings button
     - Switching image loaders (?) (can be done manually by editing \*\front-code\next.config.js)
-  - [ ] Better support for different monitor sizes
-  - [ ] Mass tagging (for tags not present in the prompt)
-  - [ ] Better statistics
-  - [ ] Mass moving (currently, only in-view images get moved when selecting all and moving)
-  - [ ] Indexing is done via _Java Streams_ currently. Ideally this should be done through db queries to make things faster
-- 2.2.0
-  - [ ] Switch between images using arrows (and arrow keys)
-  - [ ] Dropdowns for drawer sections (easier navigation of filters)
+  - Better support for different monitor sizes
+  - Mass tagging (for tags not present in the prompt)
+  - Better statistics
+  - Mass moving (currently, only in-view images get moved when selecting all and moving)
+  - Indexing is done via _Java Streams_ currently. Ideally this should be done through db queries to make things faster
+  - Switch between images using arrows (and arrow keys)
+  - Dropdowns for drawer sections (easier navigation of filters)
 - 2.1.0
-  - [x] Updated db name (this means folders/tags might need to be readded when updating)
-  - [x] Removed the need for Source/Index folders
-  - [x] Added model name (if present) to be picked up for generation information
+  - Updated database name (this means folders/tags might need to be re-added when updating)
+  - Removed the need for Source/Index folders
+  - Removed image renaming to random 16-digit number
+  - Added model name (if present) to be picked up for generation information
     - Filtering via model name is also available
-  - [x] Fixed a bug where some of the newly generated images don't show up because they're outside of filter ranges.
+  - Fixed a bug where some newly generated images don't show up because they're outside of filter ranges.
     - Filters with numbers now default to 0, but function the same way
-  - [ ] Allow users to find the location of any image easily
+  - The image names can be clicked to open the explorer with the image selected
 - 2.0.3
   - Better png image chunk parsing (previously failed at some null values)
 - 2.0.2
@@ -147,7 +162,7 @@ The latest releases can be found here. The format of releases in the case of `x.
     - Run it and if you have all the requirements it will download the source code
     - It will then compile the source code
     - You can run _update-toolkit.bat_ to update and recompile the toolkit
-    - In consecutive run, you should use _run-toolkit.bat_.
+    - In consecutive runs, you should use _run-toolkit.bat_.
 - 2.0.0
   - Now open source!
   - Redesigned UI with a full-screen view in mind. Should be more intuitive to navigate
@@ -165,8 +180,8 @@ The latest releases can be found here. The format of releases in the case of `x.
     - Image creation date
   - Folder names now the actual name of the folder, so there's no need to input them manually
     - If this turns out to be a better way to do it than manual naming I will reduce this operation from the front- to the backend
-    - Otherwise maybe give the option (?)
-  - You can now view both _Source_ and _Index_ folders, and moving from a _Source_ folder to an _Index_ one renames the file to a random 16 digit number
+    - Otherwise, maybe give the option (?)
+  - You can now view both _Source_ and _Index_ folders, and moving from a _Source_ folder to an _Index_ one renames the file to a random 16-digit number
   - Now using _MongoDB_ instead of a json file, should make things faster, and more reliable. Initial tests were run on a folder (each 3 times) of _3743_ images, and found (this probably varies from system to system, however, still promising):
     - A _79.5%_ reduction in image processing time (average of 33.28ms/img down to an average of 6.8ms/img)
     - A _97%_ reduction in storage size (average of 3782kb down to an average of 113kb). (However, please note the installation size of MongoDB)
@@ -174,13 +189,13 @@ The latest releases can be found here. The format of releases in the case of `x.
     - Will try to improve it each release, I have manually tested as much of the functionality as I could and everything seems fine on my end, but we'll obviously see how it is with others
     - Backend (via JaCoCo) at: 40%
     - Frontend at: 0%
-  - .png chunk information retreival is now available (and the only option)
+  - .png chunk information retrieval is now available (and the only option)
     - .png chunks supported (from web-ui only): tEXt, iTXt
   - Better image tagging, you can now use whatever words you want as your tags and the exact word will get picked up. (eg. say your prompt is _(cats:1.1)_, your tag can be anything such as _(cats:1.1)_, _cats_, _cats:_, _cats:1._ etc.. and it will get picked up) (from issue #7)
   - Usable backend only, if anyone wants to create a better/different frontend, it should be fairly straight forward API docs below
     - This also means the frontend will have a lesser load to deal with, which should help it run faster
 
-## Miso 1.x.x
+## Miso
 
 - 1.0.5
   - Minor bug fixes
@@ -199,7 +214,7 @@ The latest releases can be found here. The format of releases in the case of `x.
 
 ## API
 
-This section descibes the API endpoints that can be used to build on the backend if desired.
+This section describes the API endpoints that can be used to build on the backend if desired.
 
 ### Image
 
@@ -210,7 +225,17 @@ This endpoint returns a .png file. This url can be local or otherwise, however y
 ##### Endpoint
 
 ```
-GET /image/?url=${imageUrl}
+GET /image/?path=${imagePath}
+```
+
+#### Find image
+
+Hitting this endpoint will open up explorer with the image selected
+
+##### Endpoint
+
+```
+GET /image/find?path=${imagePath}
 ```
 
 #### Get image filters

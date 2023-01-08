@@ -34,7 +34,8 @@ import {
   StyledBox,
   TextFieldMargin,
   TitleListItem,
-  TypographyCenter
+  TypographyCenter,
+  TypographyCenterCursorPointer
 } from "../style/StyleProvider";
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
@@ -119,17 +120,17 @@ const ImageViewer = ({setCurrentPage}) => {
           setSelectedFilters({
             location: [],
             tags: [],
-            steps: [0,0],
+            steps: [0, 0],
             sampler: [],
-            denoise: [0,0],
-            cfg: [0,0],
+            denoise: [0, 0],
+            cfg: [0, 0],
             modelHash: [],
             modelName: [],
             faceRestoration: [],
             hypernet: [],
-            clipSkip: [0,0],
-            width: [0,0],
-            height: [0,0],
+            clipSkip: [0, 0],
+            width: [0, 0],
+            height: [0, 0],
             afterDate: new Date().getDate(),
             beforeDate: new Date().getDate()
           })
@@ -151,7 +152,8 @@ const ImageViewer = ({setCurrentPage}) => {
       query.tags = selectedFilters.tags
     }
 
-    if (selectedFilters.steps.length > 0 && Math.max(...selectedFilters.steps) !== 0) {
+    if (selectedFilters.steps.length > 0 && Math.max(...selectedFilters.steps)
+        !== 0) {
       query.steps = selectedFilters.steps
     }
 
@@ -159,11 +161,13 @@ const ImageViewer = ({setCurrentPage}) => {
       query.sampler = selectedFilters.sampler
     }
 
-    if (selectedFilters.denoise.length > 0 && Math.max(...selectedFilters.denoise) !== 0) {
+    if (selectedFilters.denoise.length > 0 && Math.max(
+        ...selectedFilters.denoise) !== 0) {
       query.denoise = selectedFilters.denoise
     }
 
-    if (selectedFilters.cfg.length > 0 && Math.max(...selectedFilters.cfg) !== 0) {
+    if (selectedFilters.cfg.length > 0 && Math.max(...selectedFilters.cfg)
+        !== 0) {
       query.cfg = selectedFilters.cfg
     }
 
@@ -183,15 +187,18 @@ const ImageViewer = ({setCurrentPage}) => {
       query.hypernet = selectedFilters.hypernet
     }
 
-    if (selectedFilters.clipSkip.length > 0 && Math.max(...selectedFilters.clipSkip) !== 0) {
+    if (selectedFilters.clipSkip.length > 0 && Math.max(
+        ...selectedFilters.clipSkip) !== 0) {
       query.clipSkip = selectedFilters.clipSkip
     }
 
-    if (selectedFilters.width.length > 0 && Math.max(...selectedFilters.width) !== 0) {
+    if (selectedFilters.width.length > 0 && Math.max(...selectedFilters.width)
+        !== 0) {
       query.width = selectedFilters.width
     }
 
-    if (selectedFilters.height.length > 0 && Math.max(...selectedFilters.height) !== 0) {
+    if (selectedFilters.height.length > 0 && Math.max(...selectedFilters.height)
+        !== 0) {
       query.height = selectedFilters.height
     }
 
@@ -206,6 +213,14 @@ const ImageViewer = ({setCurrentPage}) => {
     api.postImageFilter(query).then(value => {
       setImages(value)
     })
+  }
+
+  const getImagePath = (imageLocation, imageFileName) => {
+    return imageLocation.replaceAll("\\", "/") + "/" + imageFileName;
+  }
+
+  const findImage = (imageLocation, imageFileName) => {
+    api.findImage(getImagePath(imageLocation, imageFileName))
   }
 
   const putImages = (e) => {
@@ -307,8 +322,8 @@ const ImageViewer = ({setCurrentPage}) => {
                 <ImageListItem item={"true"} key={index}>
                   <Image
                       id={image.fileName}
-                      src={`${process.env.LOCALHOST8080}/image?url=${image.location.replaceAll(
-                          "\\", "/")}/${image.fileName}`}
+                      src={`${process.env.HOSTPATH}/image?path=${getImagePath(
+                          image.location, image.fileName)}`}
                       alt=""
                       layout="intrinsic"
                       width={image.width}
@@ -328,9 +343,11 @@ const ImageViewer = ({setCurrentPage}) => {
                               justifyContent="center"
                               alignItems="center">
                           <Grid item xs={10}>
-                            <TypographyCenter>
+                            <TypographyCenterCursorPointer
+                                onClick={() => findImage(image.location,
+                                    image.fileName)}>
                               {shortenFileName(image.fileName)}
-                            </TypographyCenter>
+                            </TypographyCenterCursorPointer>
                           </Grid>
                           <Grid item xs={2}>
                             <Checkbox checked={selectedImages.indexOf(
@@ -1008,7 +1025,7 @@ const ImageViewer = ({setCurrentPage}) => {
                       <CenterGrid item xs={scale}>
                         <Image
                             id={imageToDisplay.fileName}
-                            src={`${process.env.LOCALHOST8080}/image?url=${imageToDisplay.location.replaceAll(
+                            src={`${process.env.HOSTPATH}/image?path=${imageToDisplay.location.replaceAll(
                                 "\\", "/")}/${imageToDisplay.fileName}`}
                             alt=""
                             layout="responsive"

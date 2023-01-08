@@ -7,7 +7,7 @@ const nextConfig = {
     domains: ["localhost"],
   },
   env: {
-    LOCALHOST8080: "http://localhost:8800",
+    HOSTPATH: "http://localhost:8800",
   },
 };
 

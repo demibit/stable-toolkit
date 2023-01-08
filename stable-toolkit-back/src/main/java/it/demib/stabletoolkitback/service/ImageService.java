@@ -334,6 +334,14 @@ public class ImageService {
     }
   }
 
+  public void findImageInFolder(String path) {
+    try {
+      String treatedPath = path.split("\\?")[0].replace("/", "\\");
+      new ProcessBuilder().command("explorer.exe", "/select,", treatedPath).start();
+    } catch (Exception e) {
+      log.warn("Unable to find the specified image at path: {}", path);
+    }
+  }
 
   public List<Image> saveAll(List<Image> images) {
     List<Pair<Image, MoveDTO>> newListOfImages = images.stream().filter(image ->
