@@ -89,7 +89,7 @@ If anything doesn't make sense the "Usage" section below should explain it in de
 
 Generally, if you follow the steps in _Troubleshooting_, it should fix most of your problems.
 
-- None verified as of 2.1.0-luna release
+- None verified as of latest release
 
 # Usage
 
