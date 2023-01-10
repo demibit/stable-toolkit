@@ -8,7 +8,7 @@ This is an image viewer especially made to compliment [AUTOMATIC1111's web-ui](h
 
 ## Disclaimers
 
-- _**The toolkit moves files.** I am **not** responsible for any data loss, back up your images before using the toolkit. It should not destroy anything, but setting it up wrong may cause unwanted consequences._
+- _**The toolkit moves files.** I am **not** responsible for any data loss; back up your images before using the toolkit. It should not destroy anything, but setting it up wrong may cause unwanted consequences._
 - _The toolkit is fully offline._
 - _I do not, and will not support deletion operations. Create a "deleted" folder, move unwanted images there, and delete them manually. See this is a double confirmation for deletion._
 - _If you do not follow the installation instructions precisely it is not likely you will succeed in doing it. I **highly** recommend following the instructions for **your** sake._
