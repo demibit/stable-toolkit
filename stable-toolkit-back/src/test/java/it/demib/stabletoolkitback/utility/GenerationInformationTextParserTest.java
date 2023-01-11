@@ -23,16 +23,16 @@ public class GenerationInformationTextParserTest {
   @DisplayName("parse tests")
   class ParseTest {
 
-    private final List<String> validTextData = List.of(
-        "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)",
-        "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
-        "Steps: 200, Sampler: DPM2 a, CFG scale: 10, Seed: 647308412, Face restoration: GFPGAN, Size: 640x640, Model hash: 44b5410d, Batch size: 8, Batch pos: 4, Denoising strength: 0.85, Eta: 0.8, Clip skip: 2, Mask blur: 4");
-
-
+    // HAPPY PATH TESTS
     @Test
-    @DisplayName("Given a list of generation parameters, return a map of the parameters")
+    @DisplayName("Given a list of valid generation parameters, return a map of the parameters")
     public void test0() {
-      // Given a list of generation parameters
+      // Given a list of valid generation parameters
+      List<String> validTextData = List.of(
+          "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)",
+          "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+          "Steps: 200, Sampler: DPM2 a, CFG scale: 10, Seed: 647308412, Face restoration: GFPGAN, Size: 640x640, Model hash: 44b5410d, Batch size: 8, Batch pos: 4, Denoising strength: 0.85, Eta: 0.8, Clip skip: 2, Mask blur: 4");
+
       Map<String, String> manuallyParsedMap = new HashMap<>();
 
       manuallyParsedMap.put("Positive prompt",
@@ -55,6 +55,40 @@ public class GenerationInformationTextParserTest {
 
       // Then return a map of the parameters
       assertThat(generationInformationTextParser.parse(validTextData))
+          .containsAllEntriesOf(manuallyParsedMap);
+    }
+
+    // UNHAPPY PATH TESTS
+    @Test
+    @DisplayName("Given a list of String with the wrong number of parameters, then return an empty map")
+    public void test1() {
+      // Given a list of String with the wrong number of parameters
+      List<String> wrongNumberOfParametersTextData = List.of(
+          "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)",
+          "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality");
+      // Then return an empty map
+      assertThat(
+          generationInformationTextParser.parse(wrongNumberOfParametersTextData).size()).isEqualTo(
+          0);
+    }
+
+    @Test
+    @DisplayName("Given incorrect generation parameter String, then return only positive/negative prompts")
+    public void test2() {
+      // Given incorrect generation parameter String
+      List<String> textDataWithIncorrectGenerationParameters = List.of(
+          "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)",
+          "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
+          "Steps: 200, Sampler: DPM2 a, CFG scale: 10, Seed: 647308412, Face restoration: GFPGAN,, Size: 640x640, Model hash: 44b5410d, Batch size: 8, Batch pos: 4, Denoising strength: 0.85, Eta: 0.8, Clip skip: 2, Mask blur: 4");
+
+      Map<String, String> manuallyParsedMap = new HashMap<>();
+
+      manuallyParsedMap.put("Positive prompt",
+          "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)");
+      manuallyParsedMap.put("Negative prompt",
+          "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality");
+      // Then return only positive/negative prompts
+      assertThat(generationInformationTextParser.parse(textDataWithIncorrectGenerationParameters))
           .containsAllEntriesOf(manuallyParsedMap);
     }
   }

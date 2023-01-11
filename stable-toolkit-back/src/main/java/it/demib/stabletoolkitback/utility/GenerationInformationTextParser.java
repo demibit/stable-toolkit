@@ -3,21 +3,39 @@ package it.demib.stabletoolkitback.utility;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class GenerationInformationTextParser implements
     TextParser<Map<String, String>, List<String>> {
 
   @Override
-  public Map<String, String> parse(List<String> textData) {
-    Map<String, String> info = new HashMap<>();
+  public Map<String, String> parse(final List<String> textData) {
+    if (!Objects.equals(textData.size(), 3)) {
+      log.warn(
+          "GenerationInformationTextParser::parse - Incorrect number of parameters given, skipping generation text parsing");
+      return new HashMap<>();
+    }
 
-    String[] rawInfo = textData.get(2).split(",");
+    final Map<String, String> info = new HashMap<>();
 
-    for (String parameters : rawInfo) {
-      String[] splitParameters = parameters.split(":");
-      info.put(splitParameters[0].trim(), splitParameters[1].trim());
+    final Pattern generationParametersPattern = Pattern.compile("^(([\\w ]+):\\s([\\w. ]+),?)*");
+    final String generationParameters = textData.get(2);
+
+    if (!generationParametersPattern.matcher(generationParameters).matches()) {
+      log.warn(
+          "GenerationInformationTextParser::parse - Unable to match expected pattern for generation parameters, skipping");
+    } else {
+      final String[] rawInfo = generationParameters.split(",");
+
+      for (String parameters : rawInfo) {
+        final String[] splitParameters = parameters.split(":");
+        info.put(splitParameters[0].trim(), splitParameters[1].trim());
+      }
     }
 
     info.put("Positive prompt", textData.get(0));
