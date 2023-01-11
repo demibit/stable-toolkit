@@ -38,7 +38,7 @@ public class GenerationInformationTextParserTest {
       manuallyParsedMap.put("Positive prompt",
           "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)");
       manuallyParsedMap.put("Negative prompt",
-          "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, jpeg artifacts, signature, watermark, out of frame, extra fingers, mutated hands, (poorly drawn hands), (poorly drawn face), (mutation), (deformed breasts), (ugly), blurry, (bad anatomy), (bad proportions), (extra limbs), cloned face");
+          "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality");
       manuallyParsedMap.put("Steps", "200");
       manuallyParsedMap.put("Sampler", "DPM2 a");
       manuallyParsedMap.put("CFG scale", "10");
