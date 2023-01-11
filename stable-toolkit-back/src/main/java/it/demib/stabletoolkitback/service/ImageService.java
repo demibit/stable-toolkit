@@ -10,7 +10,7 @@ import it.demib.stabletoolkitback.model.dto.MoveDTO;
 import it.demib.stabletoolkitback.model.entity.Folder;
 import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.repository.ImageRepository;
-import it.demib.stabletoolkitback.utils.TagParser;
+import it.demib.stabletoolkitback.utility.TagParser;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

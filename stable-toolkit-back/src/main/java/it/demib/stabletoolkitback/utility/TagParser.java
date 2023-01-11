@@ -1,4 +1,4 @@
-package it.demib.stabletoolkitback.utils;
+package it.demib.stabletoolkitback.utility;
 
 import java.util.List;
 import java.util.Objects;

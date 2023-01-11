@@ -1,4 +1,4 @@
-package it.demib.stabletoolkitback.utils;
+package it.demib.stabletoolkitback.utility;
 
 import java.util.HashMap;
 import java.util.List;

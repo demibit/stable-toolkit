@@ -1,4 +1,4 @@
-package it.demib.stabletoolkitback.utils;
+package it.demib.stabletoolkitback.utility;
 
 public interface TextParser<OUT, IN> {
 
