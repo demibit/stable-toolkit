@@ -13,7 +13,8 @@ public class TagParser implements TextParser<List<String>, Pair<List<String>, St
   @Override
   public List<String> parse(Pair<List<String>, String> tags) {
     List<String> currentTags = tags.getFirst();
-    String taggable = tags.getSecond();
+    String taggable =
+        tags.getSecond();
 
     return currentTags.stream().filter(s -> isContain(taggable, s))
         .collect(Collectors.toList());
