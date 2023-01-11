@@ -25,7 +25,7 @@ public class GenerationInformationTextParserTest {
 
     private final List<String> validTextData = List.of(
         "drawing of a (cat:1.2) wearing a chef hat with a (smug expression) floating in (miso soup:1.6) intricate (high detail)",
-        "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, jpeg artifacts, signature, watermark, out of frame, extra fingers, mutated hands, (poorly drawn hands), (poorly drawn face), (mutation), (deformed breasts), (ugly), blurry, (bad anatomy), (bad proportions), (extra limbs), cloned face",
+        "Negative prompt: lowres, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality",
         "Steps: 200, Sampler: DPM2 a, CFG scale: 10, Seed: 647308412, Face restoration: GFPGAN, Size: 640x640, Model hash: 44b5410d, Batch size: 8, Batch pos: 4, Denoising strength: 0.85, Eta: 0.8, Clip skip: 2, Mask blur: 4");
 
 
