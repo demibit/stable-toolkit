@@ -36,8 +36,8 @@ This is a one time setup after which you will be able to run the toolkit via "ru
     - Your user/system variables should look similar to mine:
     - ![](01.png)
 3.  Download the _download-toolkit.bat_ from above and place it where you want the toolkit to be downloaded. (It will create a new folder)
-4.  You can then run _run-toolkit.bat_ to launch the toolkit and acess it from *http://127.0.0.1:8801/*
-5.  You can use _update-toolkit.bat_ to update and/or recompile the toolkit and run it as in 4.
+4.  Run the _update-toolkit.bat_ to update and compile the code (this can be used to update the toolkit in the future as well)
+5.  You can then run _run-toolkit.bat_ to launch the toolkit and access it from *http://127.0.0.1:8801/*
 6.  Use the cogwheel on the bottom right to add see the various settings, and use the weird upside down pyramid to filter your images
 
 ## Limitations
