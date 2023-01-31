@@ -46,6 +46,7 @@ import FolderIcon from '@mui/icons-material/Folder';
 import InfiniteScroll from "react-infinite-scroll-component";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SyncIcon from '@mui/icons-material/Sync';
+import process from "../../next.config";
 
 const defaultNumberOfImagesToShow = 50;
 const defaultScale = 6;
@@ -215,8 +216,8 @@ const ImageViewer = ({setCurrentPage}) => {
     })
   }
 
-  const getImagePath = (imageLocation, imageFileName) => {
-    return imageLocation.replaceAll("\\", "/") + "/" + imageFileName;
+  const getImagePath = (image) => {
+    return `${process.env.HOSTPATH}/image?id=${image._id}`;
   }
 
   const findImage = (imageLocation, imageFileName) => {
@@ -322,8 +323,7 @@ const ImageViewer = ({setCurrentPage}) => {
                 <ImageListItem item={"true"} key={index}>
                   <Image
                       id={image.fileName}
-                      src={`${process.env.HOSTPATH}/image?path=${getImagePath(
-                          image.location, image.fileName)}`}
+                      src={getImagePath(image)}
                       alt=""
                       layout="intrinsic"
                       width={image.width}
@@ -1025,8 +1025,7 @@ const ImageViewer = ({setCurrentPage}) => {
                       <CenterGrid item xs={scale}>
                         <Image
                             id={imageToDisplay.fileName}
-                            src={`${process.env.HOSTPATH}/image?path=${imageToDisplay.location.replaceAll(
-                                "\\", "/")}/${imageToDisplay.fileName}`}
+                            src={getImagePath(imageToDisplay)}
                             alt=""
                             layout="responsive"
                             width={imageToDisplay.width}

@@ -31,6 +31,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -47,6 +48,22 @@ public class ImageService {
   private final TagService tagService;
 
   private final FolderService folderService;
+
+  public ByteArrayResource getImage(String id) {
+    try {
+      ObjectId parsedObjectId = new ObjectId(id.split("\\?")[0]);
+
+      Image foundImage = imageRepository.findById(parsedObjectId).get();
+
+      String imageUrl = String.format("%s\\%s", foundImage.getLocation(), foundImage.getFileName());
+
+      return new ByteArrayResource(Files.readAllBytes(Paths.get(
+          imageUrl
+      )));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
 
   public ImageDTO getFilters() {
     List<Image> images = imageRepository.findAll();

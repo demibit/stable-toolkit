@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -36,12 +37,8 @@ public class ImageController {
   private final ImageService imageService;
 
   @GetMapping(produces = MediaType.IMAGE_PNG_VALUE)
-  public ResponseEntity<Resource> getImage(@RequestParam String path) throws IOException {
-    String strippedUrl = path.split("\\?")[0];
-
-    final ByteArrayResource inputStream = new ByteArrayResource(Files.readAllBytes(Paths.get(
-        strippedUrl
-    )));
+  public ResponseEntity<Resource> getImage(@RequestParam String id) {
+    ByteArrayResource inputStream = imageService.getImage(id);
 
     return ResponseEntity
         .status(HttpStatus.OK)
