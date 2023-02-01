@@ -163,6 +163,14 @@ public class ImageService {
 
     }
 
+    setZeroIfUnchangedInteger(steps);
+    setZeroIfUnchangedDouble(denoise);
+    setZeroIfUnchangedDouble(cfg);
+    setZeroIfUnchangedInteger(clipSkip);
+    setZeroIfUnchangedInteger(width);
+    setZeroIfUnchangedInteger(height);
+
+
     return ImageDTO.builder()
         .location(location)
         .creationDate(creationDate)
@@ -179,6 +187,20 @@ public class ImageService {
         .width(width)
         .height(height)
         .build();
+  }
+
+  private void setZeroIfUnchangedInteger(List<Integer> list) {
+    if (list.get(0).equals(Integer.MAX_VALUE) || list.get(1).equals(Integer.MIN_VALUE)) {
+      list.set(0, 0);
+      list.set(1, 0);
+    }
+  }
+
+  private void setZeroIfUnchangedDouble(List<Double> list) {
+    if (list.get(0).equals(Double.MAX_VALUE) || list.get(1).equals(Double.MIN_VALUE)) {
+      list.set(0, 0D);
+      list.set(1, 0D);
+    }
   }
 
   public List<ImageDTO> getImagesBy(ImageQueryParameters imageQueryParameters) {
