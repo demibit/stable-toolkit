@@ -240,10 +240,6 @@ const ImageViewer = ({setCurrentPage}) => {
     })
   }
 
-  const getTags = () => {
-    api.getTag().then(value => setTags(value))
-  }
-
   const putTag = () => {
     api.putTag([tagToAdd]).then(value => getImageFilters())
   }
