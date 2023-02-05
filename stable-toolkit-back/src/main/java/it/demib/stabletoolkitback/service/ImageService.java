@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -165,8 +166,8 @@ public class ImageService {
 
     return ImageQueryParameters.builder()
         .location(folderService.getFolders())
-        .afterDate(isInstantUnchanged(creationDate) ? null : creationDate.get(1))
-        .beforeDate(isInstantUnchanged(creationDate) ? null : creationDate.get(0))
+        .afterDate(isInstantUnchanged(creationDate) ? null : creationDate.get(1).minus(1L, ChronoUnit.MINUTES))
+        .beforeDate(isInstantUnchanged(creationDate) ? null : creationDate.get(0).plus(1L, ChronoUnit.MINUTES))
         .tags(tags.isEmpty() ? null : tags)
         .steps(isIntegerUnchanged(steps) ? null : steps)
         .sampler(sampler.isEmpty() ? null : sampler)
