@@ -12,6 +12,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoCollection;
 import it.demib.stabletoolkitback.model.dto.ImageQueryParameters;
+import it.demib.stabletoolkitback.model.entity.Folder;
 import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.repository.ImageRepository;
 import java.time.Instant;
@@ -56,7 +57,7 @@ public class ImageServiceTest {
     public void test0() {
       // Given a query with all fields
       ImageQueryParameters imageQueryParameters = mock(ImageQueryParameters.class);
-      when(imageQueryParameters.getLocation()).thenReturn(List.of("C:\\location"));
+      when(imageQueryParameters.getLocation()).thenReturn(List.of(Folder.builder().path("C:\\location").build()));
       when(imageQueryParameters.getAfterDate()).thenReturn(
           Instant.now().minus(10, ChronoUnit.SECONDS));
       when(imageQueryParameters.getBeforeDate()).thenReturn(

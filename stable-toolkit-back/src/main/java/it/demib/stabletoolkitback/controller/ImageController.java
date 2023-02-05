@@ -4,13 +4,9 @@ import it.demib.stabletoolkitback.model.dto.ImageDTO;
 import it.demib.stabletoolkitback.model.dto.ImageQueryParameters;
 import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.service.ImageService;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -64,7 +60,7 @@ public class ImageController {
   }
 
   @GetMapping("/filter")
-  public ImageDTO getFilters() {
+  public ImageQueryParameters getFilters() {
     return imageService.getFilters();
   }
 

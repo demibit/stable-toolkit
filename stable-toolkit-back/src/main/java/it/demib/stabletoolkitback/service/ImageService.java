@@ -65,12 +65,11 @@ public class ImageService {
     }
   }
 
-  public ImageDTO getFilters() {
+  public ImageQueryParameters getFilters() {
     List<Image> images = imageRepository.findAll();
 
     List<String> location = new ArrayList<>();
-    List<Instant> creationDate = new ArrayList<>(
-        List.of(Instant.ofEpochMilli(Long.MAX_VALUE), Instant.ofEpochMilli(0)));
+    List<Instant> creationDate = new ArrayList<>(List.of(Instant.MAX, Instant.MIN));
     List<Integer> steps = new ArrayList<>(List.of(Integer.MAX_VALUE, Integer.MIN_VALUE));
     List<String> sampler = new ArrayList<>();
     List<Double> denoise = new ArrayList<>(List.of(Double.MAX_VALUE, Double.MIN_VALUE));
@@ -160,47 +159,39 @@ public class ImageService {
           height.set(1, img.getHeight());
         }
       }
-
     }
 
-    setZeroIfUnchangedInteger(steps);
-    setZeroIfUnchangedDouble(denoise);
-    setZeroIfUnchangedDouble(cfg);
-    setZeroIfUnchangedInteger(clipSkip);
-    setZeroIfUnchangedInteger(width);
-    setZeroIfUnchangedInteger(height);
+    List<String> tags = tagService.findAll();
 
-
-    return ImageDTO.builder()
-        .location(location)
-        .creationDate(creationDate)
-        .tags(tagService.findAll())
-        .steps(steps)
-        .sampler(sampler)
-        .denoise(denoise)
-        .cfg(cfg)
-        .modelHash(modelHash)
-        .modelName(modelName)
-        .faceRestoration(faceRestoration)
-        .hypernet(hypernet)
-        .clipSkip(clipSkip)
-        .width(width)
-        .height(height)
+    return ImageQueryParameters.builder()
+        .location(folderService.getFolders())
+        .afterDate(isInstantUnchanged(creationDate) ? null : creationDate.get(1))
+        .beforeDate(isInstantUnchanged(creationDate) ? null : creationDate.get(0))
+        .tags(tags.isEmpty() ? null : tags)
+        .steps(isIntegerUnchanged(steps) ? null : steps)
+        .sampler(sampler.isEmpty() ? null : sampler)
+        .denoise(isDoubleUnchanged(denoise) ? null : denoise)
+        .cfg(isDoubleUnchanged(cfg) ? null : cfg)
+        .modelHash(modelHash.isEmpty() ? null : modelHash)
+        .modelName(modelName.isEmpty() ? null : modelName)
+        .faceRestoration(faceRestoration.isEmpty() ? null : faceRestoration)
+        .hypernet(hypernet.isEmpty() ? null : hypernet)
+        .clipSkip(isIntegerUnchanged(clipSkip) ? null : clipSkip)
+        .width(isIntegerUnchanged(width) ? null : width)
+        .height(isIntegerUnchanged(height) ? null : height)
         .build();
   }
 
-  private void setZeroIfUnchangedInteger(List<Integer> list) {
-    if (list.get(0).equals(Integer.MAX_VALUE) || list.get(1).equals(Integer.MIN_VALUE)) {
-      list.set(0, 0);
-      list.set(1, 0);
-    }
+  private boolean isInstantUnchanged(List<Instant> list) {
+    return list.contains(Instant.MAX) || list.contains(Instant.MIN);
   }
 
-  private void setZeroIfUnchangedDouble(List<Double> list) {
-    if (list.get(0).equals(Double.MAX_VALUE) || list.get(1).equals(Double.MIN_VALUE)) {
-      list.set(0, 0D);
-      list.set(1, 0D);
-    }
+  private boolean isIntegerUnchanged(List<Integer> list) {
+    return list.contains(Integer.MAX_VALUE) || list.contains(Integer.MIN_VALUE);
+  }
+
+  private boolean isDoubleUnchanged(List<Double> list) {
+    return list.get(0).equals(Double.MAX_VALUE) || list.get(1).equals(Double.MIN_VALUE);
   }
 
   public List<ImageDTO> getImagesBy(ImageQueryParameters imageQueryParameters) {
@@ -209,7 +200,10 @@ public class ImageService {
 
     if (Objects.nonNull(imageQueryParameters.getLocation())) {
       toAggregateBy.add(
-          Aggregates.match(Filters.in("location", imageQueryParameters.getLocation())));
+          Aggregates.match(
+              Filters.in("location", imageQueryParameters.getLocation().stream()
+                  .map(Folder::getPath)
+                  .collect(Collectors.toList()))));
     }
     if (Objects.nonNull(imageQueryParameters.getAfterDate())) {
       toAggregateBy.add(

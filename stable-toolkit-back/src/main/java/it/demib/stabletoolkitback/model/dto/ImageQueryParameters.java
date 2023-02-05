@@ -1,6 +1,9 @@
 package it.demib.stabletoolkitback.model.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import it.demib.stabletoolkitback.model.entity.Folder;
 import java.time.Instant;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -14,9 +17,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(Include.NON_NULL)
 public class ImageQueryParameters {
 
-  private List<String> location;
+  private List<Folder> location;
   private Integer count;
   private List<String> tags;
   private List<Integer> steps;
