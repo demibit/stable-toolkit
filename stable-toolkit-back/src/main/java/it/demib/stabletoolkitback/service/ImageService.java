@@ -166,8 +166,8 @@ public class ImageService {
 
     return ImageQueryParameters.builder()
         .location(folderService.getFolders())
-        .afterDate(isInstantUnchanged(creationDate) ? null : creationDate.get(1).minus(1L, ChronoUnit.MINUTES))
-        .beforeDate(isInstantUnchanged(creationDate) ? null : creationDate.get(0).plus(1L, ChronoUnit.MINUTES))
+        .afterDate(isInstantUnchanged(creationDate) ? null : creationDate.get(0).minus(1L, ChronoUnit.MINUTES))
+        .beforeDate(isInstantUnchanged(creationDate) ? null : creationDate.get(1).plus(1L, ChronoUnit.MINUTES))
         .tags(tags.isEmpty() ? null : tags)
         .steps(isIntegerUnchanged(steps) ? null : steps)
         .sampler(sampler.isEmpty() ? null : sampler)
