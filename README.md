@@ -1,4 +1,4 @@
-# stable-toolkit (2.1.0-luna)
+# stable-toolkit (2.2.0-luna)
 
 ![](miso.png) ![](luna.png)
 
