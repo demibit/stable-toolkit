@@ -43,8 +43,8 @@ public class ImageController {
   }
 
   @GetMapping("/find")
-  public void findImageInFolder(@RequestParam String path) {
-    imageService.findImageInFolder(path);
+  public void findImageInFolder(@RequestParam String id) {
+    imageService.findImageInFolder(id);
   }
 
   @DeleteMapping

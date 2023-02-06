@@ -368,12 +368,13 @@ public class ImageService {
     }
   }
 
-  public void findImageInFolder(String path) {
+  public void findImageInFolder(String id) {
     try {
-      String treatedPath = path.split("\\?")[0].replace("/", "\\");
-      new ProcessBuilder().command("explorer.exe", "/select,", treatedPath).start();
+      Image image = imageRepository.findById(new ObjectId(id)).get();
+
+      new ProcessBuilder().command("explorer.exe", "/select,", String.format("%s\\%s", image.getLocation(), image.getFileName())).start();
     } catch (Exception e) {
-      log.warn("Unable to find the specified image at path: {}", path);
+      log.warn("Unable to find the specified image with id: {}", id);
     }
   }
 

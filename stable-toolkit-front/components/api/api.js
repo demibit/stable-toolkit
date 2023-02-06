@@ -16,9 +16,9 @@ const postImageFilter = async (imageFilter) => {
   return response;
 };
 
-const findImage = async (path) => {
+const findImage = async (id) => {
   const response = await fetchWrapper.get(
-      `${process.env.HOSTPATH}/image/find?path=${path}`
+      `${process.env.HOSTPATH}/image/find?id=${id}`
   );
 
   return response;

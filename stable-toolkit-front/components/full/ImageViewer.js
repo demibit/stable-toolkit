@@ -240,8 +240,8 @@ const ImageViewer = ({ setCurrentPage }) => {
     return `${process.env.HOSTPATH}/image?id=${image._id}`;
   };
 
-  const findImage = (imageLocation, imageFileName) => {
-    api.findImage(getImagePath(imageLocation, imageFileName));
+  const findImage = (image) => {
+    api.findImage(image._id);
   };
 
   const putImages = (e) => {
@@ -368,7 +368,7 @@ const ImageViewer = ({ setCurrentPage }) => {
                         <Grid item xs={10}>
                           <TypographyCenterCursorPointer
                             onClick={() =>
-                              findImage(image.location, image.fileName)
+                              findImage(image)
                             }
                           >
                             {shortenFileName(image.fileName)}
