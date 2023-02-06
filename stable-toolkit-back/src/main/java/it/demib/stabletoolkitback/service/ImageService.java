@@ -10,13 +10,14 @@ import it.demib.stabletoolkitback.model.dto.MoveDTO;
 import it.demib.stabletoolkitback.model.entity.Folder;
 import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.repository.ImageRepository;
-import it.demib.stabletoolkitback.utils.TagParser;
+import it.demib.stabletoolkitback.utility.TagParser;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
@@ -48,12 +50,27 @@ public class ImageService {
 
   private final FolderService folderService;
 
-  public ImageDTO getFilters() {
+  public ByteArrayResource getImage(String id) {
+    try {
+      ObjectId parsedObjectId = new ObjectId(id.split("\\?")[0]);
+
+      Image foundImage = imageRepository.findById(parsedObjectId).get();
+
+      String imageUrl = String.format("%s\\%s", foundImage.getLocation(), foundImage.getFileName());
+
+      return new ByteArrayResource(Files.readAllBytes(Paths.get(
+          imageUrl
+      )));
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public ImageQueryParameters getFilters() {
     List<Image> images = imageRepository.findAll();
 
     List<String> location = new ArrayList<>();
-    List<Instant> creationDate = new ArrayList<>(
-        List.of(Instant.ofEpochMilli(Long.MAX_VALUE), Instant.ofEpochMilli(0)));
+    List<Instant> creationDate = new ArrayList<>(List.of(Instant.MAX, Instant.MIN));
     List<Integer> steps = new ArrayList<>(List.of(Integer.MAX_VALUE, Integer.MIN_VALUE));
     List<String> sampler = new ArrayList<>();
     List<Double> denoise = new ArrayList<>(List.of(Double.MAX_VALUE, Double.MIN_VALUE));
@@ -143,25 +160,39 @@ public class ImageService {
           height.set(1, img.getHeight());
         }
       }
-
     }
 
-    return ImageDTO.builder()
-        .location(location)
-        .creationDate(creationDate)
-        .tags(tagService.findAll())
-        .steps(steps)
-        .sampler(sampler)
-        .denoise(denoise)
-        .cfg(cfg)
-        .modelHash(modelHash)
-        .modelName(modelName)
-        .faceRestoration(faceRestoration)
-        .hypernet(hypernet)
-        .clipSkip(clipSkip)
-        .width(width)
-        .height(height)
+    List<String> tags = tagService.findAll();
+
+    return ImageQueryParameters.builder()
+        .location(folderService.getFolders())
+        .afterDate(isInstantUnchanged(creationDate) ? null : creationDate.get(0).minus(1L, ChronoUnit.MINUTES))
+        .beforeDate(isInstantUnchanged(creationDate) ? null : creationDate.get(1).plus(1L, ChronoUnit.MINUTES))
+        .tags(tags.isEmpty() ? null : tags)
+        .steps(isIntegerUnchanged(steps) ? null : steps)
+        .sampler(sampler.isEmpty() ? null : sampler)
+        .denoise(isDoubleUnchanged(denoise) ? null : denoise)
+        .cfg(isDoubleUnchanged(cfg) ? null : cfg)
+        .modelHash(modelHash.isEmpty() ? null : modelHash)
+        .modelName(modelName.isEmpty() ? null : modelName)
+        .faceRestoration(faceRestoration.isEmpty() ? null : faceRestoration)
+        .hypernet(hypernet.isEmpty() ? null : hypernet)
+        .clipSkip(isIntegerUnchanged(clipSkip) ? null : clipSkip)
+        .width(isIntegerUnchanged(width) ? null : width)
+        .height(isIntegerUnchanged(height) ? null : height)
         .build();
+  }
+
+  private boolean isInstantUnchanged(List<Instant> list) {
+    return list.contains(Instant.MAX) || list.contains(Instant.MIN);
+  }
+
+  private boolean isIntegerUnchanged(List<Integer> list) {
+    return list.contains(Integer.MAX_VALUE) || list.contains(Integer.MIN_VALUE);
+  }
+
+  private boolean isDoubleUnchanged(List<Double> list) {
+    return list.get(0).equals(Double.MAX_VALUE) || list.get(1).equals(Double.MIN_VALUE);
   }
 
   public List<ImageDTO> getImagesBy(ImageQueryParameters imageQueryParameters) {
@@ -170,7 +201,10 @@ public class ImageService {
 
     if (Objects.nonNull(imageQueryParameters.getLocation())) {
       toAggregateBy.add(
-          Aggregates.match(Filters.in("location", imageQueryParameters.getLocation())));
+          Aggregates.match(
+              Filters.in("location", imageQueryParameters.getLocation().stream()
+                  .map(Folder::getPath)
+                  .collect(Collectors.toList()))));
     }
     if (Objects.nonNull(imageQueryParameters.getAfterDate())) {
       toAggregateBy.add(
@@ -334,12 +368,13 @@ public class ImageService {
     }
   }
 
-  public void findImageInFolder(String path) {
+  public void findImageInFolder(String id) {
     try {
-      String treatedPath = path.split("\\?")[0].replace("/", "\\");
-      new ProcessBuilder().command("explorer.exe", "/select,", treatedPath).start();
+      Image image = imageRepository.findById(new ObjectId(id)).get();
+
+      new ProcessBuilder().command("explorer.exe", "/select,", String.format("%s\\%s", image.getLocation(), image.getFileName())).start();
     } catch (Exception e) {
-      log.warn("Unable to find the specified image at path: {}", path);
+      log.warn("Unable to find the specified image with id: {}", id);
     }
   }
 

@@ -1,4 +1,4 @@
-package it.demib.stabletoolkitback.utils;
+package it.demib.stabletoolkitback.utility;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
