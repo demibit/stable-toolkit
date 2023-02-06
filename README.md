@@ -127,7 +127,7 @@ The latest releases can be found here. The format of releases in the case of `x.
 
 - `x`: Major releases that can include redesigns/significant features/changes that might not be compatible with previous versions
 - `y`: Minor releases that include new/changed/removed features, and various bug fixes
-- `z`: Patch releases inbetween feature rollouts typically for important bug fixes
+- `z`: Patch releases in-between feature rollouts typically for important bug fixes
 
 ## Luna
 
@@ -142,7 +142,16 @@ The latest releases can be found here. The format of releases in the case of `x.
   - Mass moving (currently, only in-view images get moved when selecting all and moving)
   - Indexing is done via _Java Streams_ currently. Ideally this should be done through db queries to make things faster
   - Switch between images using arrows (and arrow keys)
-  - Dropdowns for drawer sections (easier navigation of filters)
+  - The ability to dynamically add filters as desired instead of all being present by default
+  - Different sorting options 
+  - Better logging on back end
+  - Better error handling all around, mainly front end
+- 2.2.0
+  - Made generation parameter parsing more efficient and robust
+  - Using image ID instead of path to retrieve images, images/folders can be named anything without causing issues
+  - Fixed a bug that would cause the front end to break due to the way filters were retrieved
+    - Filtering after/before dates are automatically filled with the earliest/latest images' creation dates
+  - Some general code cleanup
 - 2.1.0
   - Updated database name (this means folders/tags might need to be re-added when updating)
   - Removed the need for Source/Index folders
@@ -220,27 +229,27 @@ This section describes the API endpoints that can be used to build on the backen
 
 #### Get image
 
-This endpoint returns a .png file. This url can be local or otherwise, however you'll need to update the next.js config if you want to make it non-local.
+This endpoint returns a .png file. The stored image's id will need to be provided.
 
 ##### Endpoint
 
 ```
-GET /image/?path=${imagePath}
+GET /image/?id=${imageId}
 ```
 
 #### Find image
 
-Hitting this endpoint will open up explorer with the image selected
+Hitting this endpoint will open up explorer with the image selected.
 
 ##### Endpoint
 
 ```
-GET /image/find?path=${imagePath}
+GET /image/find?id=${imageId}
 ```
 
 #### Get image filters
 
-Get possible image filters and their range based on data in the database.
+Get possible image filters and their range based on data in the database. If no images have a particular filter option/attribute, it will not be returned. For possible parameters to filter by, see above in `Features in current version`.
 
 ##### Endpoint
 
@@ -252,8 +261,18 @@ GET /image/filter
 
 ```
 {
-	"location": ["path", "path2"],
-	"creationDate": ["2022-01-01T00:00:00.000Z", ["2022-01-10T00:00:00.000Z"],
+	"location": [
+	    {
+	      "name": "folderName1",
+		  "path": "folderPath1"
+	    },
+	    {
+	      "name": "folderName2",
+	      "path": "folderPath2"
+	    }
+	],
+	"afterDate": "2022-01-01T00:00:00.000Z", 
+	"beforeDate": "2022-01-10T00:00:00.000Z",
 	"tags": ["dog", "park", "cat"],
 	"steps": [20, 60],
 	"sampler": ["DDIM", "Euler a", "DPM2 a"],
@@ -270,9 +289,10 @@ GET /image/filter
 
 #### Query images
 
-Endpoint to query images. Optional query parameters can be sent:
+Endpoint to query images.
 
 - Only queries by given parameters, all fields are optional
+- Images are sorted by creation date by default
 - If nothing is set, every image object is returned
   - It is recommended to at least set the count to avoid large payloads
 
@@ -286,7 +306,16 @@ POST /image/filter
 
 ```
 {
-	"location": "path",
+	"location": [
+	    {
+	      "name": "folderName1",
+		  "path": "folderPath1"
+	    },
+	    {
+	      "name": "folderName2",
+	      "path": "folderPath2"
+	    }
+	],
 	"count": 50,
 	"tags": ["dog", "cat"],
 	"steps": [20,40],
@@ -299,8 +328,8 @@ POST /image/filter
 	"clipSkip": [2, 2],
 	"width": [960, 1280],
 	"height": [640, 640],
-	"afterDate": ["2022-01-10T00:00:00.000Z"],
-	"beforeDate": ["2022-01-01T00:00:00.000Z"]
+	"afterDate": "2022-01-1T00:00:00.000Z",
+	"beforeDate": "2022-01-10T00:00:00.000Z"
 }
 ```
 
@@ -333,7 +362,7 @@ POST /image/filter
 
 #### Update images
 
-Endpoint to update images. Returns the updated images. You are able to change tags/location. If a file that doesn't confrom to naming standards (defaulted to a 16 digit number) is being moved, the file will be renamed.
+Endpoint to update images. Returns the updated images. You are able to change tags/location.
 
 ##### Endpoint
 
