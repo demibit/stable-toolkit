@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
+@Component
+@NoArgsConstructor
 public class GenerationInformationTextParser implements
     TextParser<Map<String, String>, List<String>> {
 

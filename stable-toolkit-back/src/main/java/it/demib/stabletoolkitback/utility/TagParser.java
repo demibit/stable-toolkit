@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import lombok.NoArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class TagParser implements TextParser<List<String>, Pair<List<String>, String>> {
 
   @Override
