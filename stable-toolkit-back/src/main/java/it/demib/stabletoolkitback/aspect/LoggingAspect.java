@@ -1,4 +1,4 @@
-package it.demib.stabletoolkitback.configuration;
+package it.demib.stabletoolkitback.aspect;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
