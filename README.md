@@ -1,4 +1,4 @@
-# stable-toolkit (2.2.0-luna)
+# stable-toolkit (2.2.1-luna)
 
 ![](miso.png) ![](luna.png)
 
@@ -146,6 +146,8 @@ The latest releases can be found here. The format of releases in the case of `x.
   - Different sorting options 
   - Better logging on back end
   - Better error handling all around, mainly front end
+- 2.2.1
+  - Fix some generation parameters not being properly picked up
 - 2.2.0
   - Made generation parameter parsing more efficient and robust
   - Using image ID instead of path to retrieve images, images/folders can be named anything without causing issues
