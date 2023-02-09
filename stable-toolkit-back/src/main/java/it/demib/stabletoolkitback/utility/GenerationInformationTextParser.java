@@ -30,7 +30,7 @@ public class GenerationInformationTextParser implements
 
     if (!generationParametersPattern.matcher(generationParameters).matches()) {
       log.warn(
-          "GenerationInformationTextParser::parse - Unable to match expected pattern for generation parameters, skipping");
+          "GenerationInformationTextParser::parse - Unable to match expected pattern for generation parameters, skipping generation text parsing");
     } else {
       final String[] rawInfo = generationParameters.split(",");
 
