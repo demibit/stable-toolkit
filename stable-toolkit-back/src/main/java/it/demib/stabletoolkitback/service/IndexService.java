@@ -4,6 +4,7 @@ import it.demib.stabletoolkitback.constant.ImageType;
 import it.demib.stabletoolkitback.model.entity.Folder;
 import it.demib.stabletoolkitback.model.entity.Image;
 import it.demib.stabletoolkitback.utility.GenerationInformationTextParser;
+import it.demib.stabletoolkitback.utility.LogMessageUtility;
 import it.demib.stabletoolkitback.utility.PNGTextExtractor;
 import it.demib.stabletoolkitback.utility.TagParser;
 import java.awt.image.BufferedImage;
@@ -60,6 +61,9 @@ public class IndexService {
   }
 
   private void indexFolder(Folder folder) {
+    log.info(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+        String.format("Indexing folder: %s", folder.getName())));
+
     List<Image> images = imageService.findAll();
     Set<String> imageFileNameSet = images.stream()
         .map(Image::getFileName)
@@ -80,6 +84,9 @@ public class IndexService {
 
             if (currentFileName.endsWith(ImageType.PNG) && !imageFileNameSet.contains(
                 currentFileName)) {
+              log.info(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+                  String.format("Indexing image %s", currentFileName)));
+
               List<String> tagsToAssign = new ArrayList<>();
               Map<String, String> info = new HashMap<>();
               List<String> textData = new ArrayList<>();
@@ -91,11 +98,16 @@ public class IndexService {
                 textData = Arrays.asList(
                     pngTextExtractor.showText(new FileInputStream(img)));
               } catch (Exception e) {
-                log.info("Unable to read image chunks at {}, proceeding with defaults",
-                    folder.getName());
+                log.warn(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+                    String.format("Unable to read the image chunks of %s, continuing without it",
+                        currentFileName)));
               }
 
               if (textData.size() >= 3) {
+                log.info(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+                    String.format("Attempting to parse the generation text of %s",
+                        currentFileName)));
+
                 tagsToAssign = tagParser.parse(Pair.of(currentTags, textData.get(0)));
                 info = generationInformationTextParser.parse(textData);
               }
@@ -107,7 +119,9 @@ public class IndexService {
                 creationDate = Files.readAttributes(path, BasicFileAttributes.class).creationTime()
                     .toInstant();
               } catch (Exception e) {
-                log.info("Unable to read creation date, continuing without it");
+                log.warn(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+                    String.format("Unable to read the creation date of %s, continuing without it",
+                        currentFileName)));
               }
 
               try {
@@ -115,7 +129,10 @@ public class IndexService {
                 width = bimg.getWidth();
                 height = bimg.getHeight();
               } catch (Exception e) {
-                log.info("Unable to read image dimensions, continuing without it");
+                log.warn(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+                    String.format(
+                        "Unable to read the image dimensions of %s, continuing without it",
+                        currentFileName)));
               }
 
               imageService.save(Image.builder()
@@ -144,9 +161,9 @@ public class IndexService {
                   .build());
             }
           });
-    } catch (
-        Exception e) {
-      log.error("Unable to move image(s)!");
+    } catch (Exception e) {
+      log.error(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+          "Unable to index images"));
       e.printStackTrace();
       throw new RuntimeException(e);
     }
@@ -155,7 +172,9 @@ public class IndexService {
 
     if (sizeAfter > sizeBefore || sizeAfter < sizeBefore) {
       imageService.updateTags();
-      log.info("Total indexed image count: {} | Added from: {}", sizeAfter, folder.getPath());
+      log.info(LogMessageUtility.assembleLogMessage("IndexService", "indexFolder",
+          String.format("Finished indexing folder: %s | total image count: %s", folder.getName(),
+              sizeAfter)));
     }
   }
 }
