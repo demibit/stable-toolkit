@@ -25,7 +25,7 @@ public class GenerationInformationTextParser implements
 
     final Map<String, String> info = new HashMap<>();
 
-    final Pattern generationParametersPattern = Pattern.compile("^(([\\w ]+):\\s([\\w. ]+),?)*");
+    final Pattern generationParametersPattern = Pattern.compile("^(([^,]+):\\s([^,]+),?)*");
     final String generationParameters = textData.get(2);
 
     if (!generationParametersPattern.matcher(generationParameters).matches()) {
