@@ -18,8 +18,10 @@ public class GenerationInformationTextParser implements
   @Override
   public Map<String, String> parse(final List<String> textData) {
     if (!Objects.equals(textData.size(), 3)) {
-      log.warn(
-          "GenerationInformationTextParser::parse - Incorrect number of parameters given, skipping generation text parsing");
+      log.warn(LogMessageUtility.assembleLogMessage("GenerationInformationTextParser", "parse",
+          String.format(
+              "Incorrect number of parameters given, skipping generation text parsing for: %s",
+              textData)));
       return new HashMap<>();
     }
 
@@ -29,8 +31,10 @@ public class GenerationInformationTextParser implements
     final String generationParameters = textData.get(2);
 
     if (!generationParametersPattern.matcher(generationParameters).matches()) {
-      log.warn(
-          "GenerationInformationTextParser::parse - Unable to match expected pattern for generation parameters, skipping generation text parsing");
+      log.warn(LogMessageUtility.assembleLogMessage("GenerationInformationTextParser", "parse",
+          String.format(
+              "Unable to match expected pattern for generation parameters, skipping generation text parsing for: %s",
+              textData)));
     } else {
       final String[] rawInfo = generationParameters.split(",");
 
