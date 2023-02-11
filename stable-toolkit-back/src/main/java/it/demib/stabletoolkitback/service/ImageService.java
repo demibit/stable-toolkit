@@ -56,11 +56,9 @@ public class ImageService {
 
       Image foundImage = imageRepository.findById(parsedObjectId).orElseThrow();
 
-      String imageUrl = Paths.get(foundImage.getLocation()).resolve(Paths.get(foundImage.getFileName())).toString();
+      Path imagePath = Paths.get(foundImage.getLocation()).resolve(Paths.get(foundImage.getFileName()));
 
-      return new ByteArrayResource(Files.readAllBytes(Paths.get(
-          imageUrl
-      )));
+      return new ByteArrayResource(Files.readAllBytes(imagePath));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
