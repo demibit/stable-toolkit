@@ -56,12 +56,16 @@ public class ImageService {
 
       Image foundImage = imageRepository.findById(parsedObjectId).orElseThrow();
 
-      Path imagePath = Paths.get(foundImage.getLocation()).resolve(Paths.get(foundImage.getFileName()));
+      Path imagePath = getFullImagePath(foundImage.getLocation(), foundImage.getFileName());
 
       return new ByteArrayResource(Files.readAllBytes(imagePath));
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
+  }
+
+  private Path getFullImagePath(String imageLocation, String imageFileName) {
+    return Paths.get(imageLocation).resolve(Paths.get(imageFileName));
   }
 
   public ImageQueryParameters getFilters() {
@@ -368,9 +372,9 @@ public class ImageService {
 
   public void findImageInFolder(String id) {
     try {
-      Image image = imageRepository.findById(new ObjectId(id)).get();
+      Image image = imageRepository.findById(new ObjectId(id)).orElseThrow();
 
-      new ProcessBuilder().command("explorer.exe", "/select,", String.format("%s\\%s", image.getLocation(), image.getFileName())).start();
+      new ProcessBuilder().command("explorer.exe", "/select,", getFullImagePath(image.getLocation(), image.getFileName()).toString()).start();
     } catch (Exception e) {
       log.warn("Unable to find the specified image with id: {}", id);
     }
