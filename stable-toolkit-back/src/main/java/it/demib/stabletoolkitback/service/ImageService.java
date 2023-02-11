@@ -54,9 +54,9 @@ public class ImageService {
     try {
       ObjectId parsedObjectId = new ObjectId(id.split("\\?")[0]);
 
-      Image foundImage = imageRepository.findById(parsedObjectId).get();
+      Image foundImage = imageRepository.findById(parsedObjectId).orElseThrow();
 
-      String imageUrl = String.format("%s\\%s", foundImage.getLocation(), foundImage.getFileName());
+      String imageUrl = Paths.get(foundImage.getLocation()).resolve(Paths.get(foundImage.getFileName())).toString();
 
       return new ByteArrayResource(Files.readAllBytes(Paths.get(
           imageUrl
