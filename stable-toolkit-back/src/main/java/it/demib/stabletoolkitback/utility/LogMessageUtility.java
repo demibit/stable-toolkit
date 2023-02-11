@@ -1,9 +1,9 @@
 package it.demib.stabletoolkitback.utility;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LogMessageUtility {
 
   public static String assembleLogMessage(String className, String methodName, String logMessage) {
